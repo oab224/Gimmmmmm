@@ -148,109 +148,6 @@
                         <label class="custom-control-label" th:for="${'color-' + color.id}" th:text="${color.name}"></label>
                     </div>
                 </div>
-<!--                <script th:inline="javascript">-->
-<!--                    var listProductSize = [[${listProductSize}]];-->
-<!--                    var listProductColor = [[${listProductColor}]];-->
-<!--                    var discount = [[${discount}]];-->
-<!--                    var value = [[${value}]]-->
-<!--                    var discountValue = discount.value ? discount.value : 0-->
-<!--                    var colorSelected = null;-->
-<!--                    var sizeSelected = null;-->
-<!--                    function disableColor() {-->
-<!--                        for (let i = 0; i < listProductColor.length; i++) {-->
-<!--                            document.getElementById('color-' + listProductColor[i].id).disabled = true-->
-<!--                        }-->
-<!--                    }-->
-<!--                    disableColor()-->
-<!--                    function sizeChange(id) {-->
-
-<!--                        let index = -1;-->
-<!--                        for (let i = 0; i < listProductSize.length; i++) {-->
-<!--                            if (listProductSize[i].id === id) {-->
-<!--                                index = i;-->
-<!--                                break;-->
-<!--                            }-->
-<!--                        }-->
-<!--                        if (index === -1) return-->
-<!--                        const listColorId = listProductSize[index].listColorId;-->
-<!--                        for (let i = 0; i < listProductColor.length; i++) {-->
-<!--                            document.getElementById('color-' + listProductColor[i].id).disabled = true-->
-<!--                            document.getElementById('color-' + listProductColor[i].id).checked = false-->
-<!--                        }-->
-<!--                        for (let i = 0; i < listColorId.length; i++) {-->
-<!--                            document.getElementById('color-' + listColorId[i]).disabled = false-->
-<!--                        }-->
-<!--                        sizeSelected = id;-->
-<!--                        return id;-->
-<!--                    }-->
-
-<!--                    function colorChange(id) {-->
-<!--                        let index = -1;-->
-<!--                        for (let i = 0; i < listProductSize.length; i++) {-->
-<!--                            if (listProductSize[i].id === sizeSelected) {-->
-<!--                                index = i;-->
-<!--                                break;-->
-<!--                            }-->
-<!--                        }-->
-<!--                        if (index === -1) return-->
-<!--                        const size = listProductSize[index]-->
-<!--                        const listColor = size.propertiesResponseList-->
-<!--                        let color = null;-->
-<!--                        for (let i = 0; i < listColor.length; i++) {-->
-<!--                            if (listColor[i].id === id) {-->
-<!--                                color = listColor[i]-->
-<!--                            }-->
-<!--                        }-->
-<!--                        if (color === null) return-->
-<!--                        const code = color.code-->
-<!--                        const quantity = color.quantity-->
-<!--                        let price = color.price-->
-<!--                        let discountPrice = color.price - color.price * value / 100-->
-<!--                        let formattedPriceTop = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });-->
-<!--                        formattedPriceTop = formattedPriceTop.toString().replaceAll("₫", "")-->
-<!--                        formattedPriceTop = formattedPriceTop.toString().replaceAll(".", ",")-->
-<!--                        let discountPriceFormatted = discountPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });-->
-<!--                        discountPriceFormatted = discountPriceFormatted.toString().replaceAll("₫", "").replaceAll('.', ',')-->
-<!--                        document.getElementById('product-code').innerText = code-->
-<!--                        document.getElementById('productDetail-quantity').innerText = quantity-->
-<!--                        let priceDiscountMax = [[${priceDiscountMax}]]-->
-<!--                        let priceDiscountMin = [[${priceDiscountMin}]]-->
-<!--                        if (priceDiscountMin !== priceDiscountMax) {-->
-<!--                            if (document.getElementById('price-top') != null) {-->
-<!--                                document.getElementById('price-top').innerText = '₫' + discountPriceFormatted-->
-<!--                            }-->
-
-
-<!--                            if (document.getElementById('price-top-discount') != null) {-->
-<!--                                document.getElementById('price-top-discount').innerText = '₫' + formattedPriceTop-->
-<!--                            }-->
-
-<!--                            let formattedPriceButtom = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });-->
-<!--                            formattedPriceButtom = formattedPriceButtom.toString().replaceAll("₫", "")-->
-<!--                            formattedPriceButtom = formattedPriceButtom.toString().replaceAll(".", ",")-->
-<!--                            document.getElementById('product-code').innerText = code-->
-<!--                            document.getElementById('productDetail-quantity').innerText = quantity-->
-<!--                            if (document.getElementById('price-bottom') != null) {-->
-<!--                                document.getElementById('price-bottom').innerText = '₫' + formattedPriceButtom-->
-<!--                            }-->
-<!--                            colorSelected = id;-->
-<!--                            return id;-->
-<!--                        } else {-->
-<!--                            debugger-->
-<!--                            if (document.getElementById('price-bottom') != null) {-->
-<!--                                document.getElementById('price-bottom').innerText = '₫' + discountPriceFormatted-->
-<!--                            }-->
-
-<!--                            if (document.getElementById('price-top-discount') != null) {-->
-<!--                                document.getElementById('price-top-discount').innerText = '₫' + formattedPriceTop-->
-<!--                            }-->
-
-<!--                            colorSelected = id;-->
-<!--                            return id;-->
-<!--                        }-->
-<!--                    }-->
-
-<!--                </script>-->
                 <span id="error-message" style="color: red;"></span>
                 <input th:value="${numberProductDetail}" hidden="hidden" id="maxValue">
                 <div class="d-flex align-items-center mb-4 pt-2">
@@ -260,36 +157,32 @@
                                 <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="text" class="form-control  text-center" id="quantityBuy"disabled value="1" name="quantity" style="margin-right: 5px; margin-left: 5px">
+                        <input type="text" class="form-control  text-center" id="quantityBuy"readonly value="1" name="quantity" style="margin-right: 5px; margin-left: 5px">
+                        <script th:inline="javascript">
+                            const quantityBuy = document.getElementById('quantityBuy');
 
+                            quantityBuy.addEventListener('input', function(event) {
+                                const inputValue = event.target.value;
+                                event.target.value = inputValue.replace(/\D/g, '');
+                                if (event.target.value.trim() === '') {
+                                    event.target.value = '1';
+                                }
+                            });
+
+                        </script>
                         <div class="input-group-btn">
                             <button class="btn btn-primary btn-plus" type="button">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
-<!--                        <script th:inline="javascript">-->
-<!--                            const quantityBuy = document.getElementById('quantityBuy');-->
-<!--                            const maxValueElement = document.getElementById('maxValue');-->
-<!--                            const maxQuantity = parseInt(maxValueElement.value.trim()); // Lấy giá trị từ thẻ <span> và chuyển thành số-->
-
-<!--                            const btnPlus = document.querySelector(".btn-plus-custom");-->
-<!--                            const btnMinus = document.querySelector(".btn-minus-custom");-->
-<!--                            var newVal = parseInt(quantityBuy.value);-->
-<!--                            btnPlus.addEventListener('click', function (){-->
-<!--                                newVal = parseInt(quantityBuy.value) + 1;-->
-<!--                                console.log(newVal);-->
-<!--                                document.getElementById('quantityBuy').value = newVal;-->
-<!--                            });-->
-<!--                        </script>-->
                     </div>
-
-
                 </div>
                 <div class="col d-grid">
                     <button class="btn btn-success btn-lg" type="submit"><i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ hàng
                     </button>
                 </div>
             </form>
+
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Chia sẻ:</p>
                 <div class="d-inline-flex">

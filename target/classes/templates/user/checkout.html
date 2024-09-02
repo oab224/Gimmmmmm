@@ -82,7 +82,7 @@
                         <div class="col-md-6">
                             <div class="card border-0">
                                 <div class="card-header pb-0" style="background: none; border-bottom: none">
-                                    <p class="card-text text-muted mt-4  space">ĐỊA CHỈ NHẬN HÀNG
+                                    <p class="card-text  mt-4  space">ĐỊA CHỈ NHẬN HÀNG
                                         <a th:if="${loggedIn}" href="#" data-toggle="modal" data-target="#addressModal">
                                             Chọn địa chỉ
                                         </a>
@@ -91,25 +91,25 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="name" class="small text-muted mb-1">TÊN</label>
+                                        <label for="name" class="small  mb-1">TÊN</label>
                                         <input type="text" class="form-control form-control-sm" th:if="${defaultAddress != null}" th:value="${defaultAddress.customerName}" name="name" id="name"/>
                                         <input type="text" class="form-control form-control-sm" th:unless="${defaultAddress != null}" name="name" id="name"/>
                                         <span id="nameError" class="small text-danger"></span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="email" class="small text-muted mb-1">EMAIL</label>
+                                        <label for="email" class="small  mb-1">EMAIL</label>
                                         <input type="text" class="form-control form-control-sm" name="email" id="email"
                                                th:value="${email}" th:readonly="${loggedIn}">
                                         <span id="emailError" class="small text-danger"></span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="phone-number" class="small text-muted mb-1">SỐ ĐIỆN THOẠI</label>
+                                        <label for="phone-number" class="small  mb-1">SỐ ĐIỆN THOẠI</label>
                                         <input type="text" class="form-control form-control-sm" th:if="${defaultAddress != null}" th:value="${defaultAddress.phoneNumber}" name="phoneNumber" id="phone-number">
                                         <input type="text" class="form-control form-control-sm" th:unless="${defaultAddress != null}" name="phoneNumber" id="phone-number"/>
                                         <span id="phoneNumberError" class="small text-danger"></span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="specific-address" class="small text-muted mb-1">SỐ NHÀ, ĐƯỜNG</label>
+                                        <label for="specific-address" class="small  mb-1">SỐ NHÀ, ĐƯỜNG</label>
                                         <input type="text" class="form-control form-control-sm" th:if="${defaultAddress != null}" th:value="${defaultAddress.specificAddress}" name="specificAddress" id="specific-address">
                                         <input type="text" class="form-control form-control-sm" th:unless="${defaultAddress != null}" name="specificAddress" id="specific-address"/>
                                         <span id="specificAddressError" class="small text-danger"></span>
@@ -117,7 +117,7 @@
                                     <div class="row no-gutters">
                                         <div class="col-sm-4 pr-sm-2">
                                             <div class="form-group">
-                                                <label for="city" class="small text-muted mb-1">TỈNH THÀNH</label>
+                                                <label for="city" class="small  mb-1">TỈNH THÀNH</label>
                                                 <select class="form-control form-control-sm" name="city" id="city">
                                                     <option value="" selected>Tỉnh thành</option>
                                                 </select>
@@ -126,7 +126,7 @@
                                         </div>
                                         <div class="col-sm-4 pr-sm-2">
                                             <div class="form-group">
-                                                <label for="district" class="small text-muted mb-1">QUẬN HUYỆN</label>
+                                                <label for="district" class="small  mb-1">QUẬN HUYỆN</label>
                                                 <select class="form-control form-control-sm" name="district" id="district">
                                                     <option value="" selected>Quận huyện</option>
                                                 </select>
@@ -135,7 +135,7 @@
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="ward" class="small text-muted mb-1">PHƯỜNG XÃ</label>
+                                                <label for="ward" class="small  mb-1">PHƯỜNG XÃ</label>
                                                 <select class="form-control form-control-sm" name="ward" id="ward">
                                                     <option value="" selected>Phường xã</option>
                                                 </select>
@@ -144,7 +144,7 @@
                                         </div>
                                     </div>
                                     <div class="row mt-4" th:if="${not #lists.isEmpty(listVoucher)}">
-                                        <div class="col"><p class="text-muted mb-2">ƯU ĐÃI</p>
+                                        <div class="col"><p class=" mb-2">ƯU ĐÃI</p>
                                             <hr class="mt-0">
                                         </div>
                                     </div>
@@ -163,29 +163,29 @@
                                     <input type="hidden" id="defaultWard" th:value="${defaultAddress != null ? defaultAddress.ward : ''}" />
 
                                     <div class="row mt-4">
-                                        <div class="col"><p class="text-muted mb-2">PHƯƠNG THỨC THANH TOÁN</p>
+                                        <div class="col"><p class=" mb-2">PHƯƠNG THỨC THANH TOÁN</p>
                                             <hr class="mt-0">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <input type="radio" th:value="'Thanh toán khi nhận hàng'"
                                                name="payment" id="cod" checked>
-                                        <label for="cod" class="small text-muted mb-1">Thanh toán khi nhận hàng</label>
+                                        <label for="cod" class="small  mb-1">Thanh toán khi nhận hàng</label>
                                     </div>
                                     <div class="form-group">
                                         <input type="radio" th:value="'VNPAY'"
                                                name="payment" id="vnpay">
-                                        <label for="vnpay" class="small text-muted mb-1">VNPAY</label>
+                                        <label for="vnpay" class="small  mb-1">VNPAY</label>
                                     </div>
                                     <div class="form-group">
                                         <input type="radio" th:value="'ZaloPay'"
                                                name="payment" id="zalopay">
-                                        <label for="zalopay" class="small text-muted mb-1">ZaloPay</label>
+                                        <label for="zalopay" class="small  mb-1">ZaloPay</label>
                                     </div>
 <!--                                    <div class="form-group">-->
 <!--                                        <input type="radio" th:value="'Momo'"-->
 <!--                                               name="payment" id="momo">-->
-<!--                                        <label for="momo" class="small text-muted mb-1">Momo</label>-->
+<!--                                        <label for="momo" class="small  mb-1">Momo</label>-->
 <!--                                    </div>-->
                                     <input type="text" id="tongTienHang" th:hidden="true" th:value="${cart.totalPrice}">
                                     <input type="text" id="phiShip" th:hidden="true" th:value="0">
@@ -196,7 +196,7 @@
                         <div class="col-md-6">
                             <div class="card border-0 ">
                                 <div class="card-header card-2" style="background: none; border-bottom: none">
-                                    <p class="card-text text-muted mt-md-4  mb-2 space">TỔNG QUAN ĐƠN HÀNG</p>
+                                    <p class="card-text  mt-md-4  mb-2 space">TỔNG QUAN ĐƠN HÀNG</p>
                                     <hr class="my-2">
                                 </div>
                                 <div class="card-body pt-0">
@@ -212,7 +212,7 @@
                                                                 <p class="mb-0"><b
                                                                         th:text="${item.productDetail.product.name}"></b>
                                                                 </p>
-                                                                <small class="text-muted" th:text="'Màu: ' + ${item.productDetail.color.name}
+                                                                <small class="" th:text="'Màu: ' + ${item.productDetail.color.name}
                                 + ', ' + 'Kích cỡ: ' + ${item.productDetail.size.name}"></small>
                                                             </div>
                                                         </div>
