@@ -47,7 +47,7 @@ public interface BillService {
 
     List<Bill> getAllOrders(Integer customerId);
 
-    boolean userCancelOrder(Integer billId);
+    boolean userCancelOrder(Integer billId, String cancelReason);
 
     boolean confirmOrder(Integer billId, Account account);
 

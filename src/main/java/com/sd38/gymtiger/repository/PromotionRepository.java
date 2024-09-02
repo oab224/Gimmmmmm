@@ -26,7 +26,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
 
     List<Promotion> findAllByStatusOrderByIdDesc(Integer status);
 
-    @Query("SELECT p FROM Promotion p WHERE p.status IN (1, 2) ORDER BY p.id DESC")
+    @Query("SELECT p FROM Promotion p WHERE p.status IN (0, 1, 2) ORDER BY p.id DESC")
     Page<Promotion> findAllByStatusOrderByIdDesc(Pageable pageable);
 
     Page<Promotion> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
@@ -38,10 +38,11 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
 
     @Query(value = "SELECT p.id AS id, p.code AS code, p.name AS name, p.value AS value, p.startDate AS startDate, p.endDate AS endDate, p.status AS status " +
             "FROM Promotion p " +
-            "WHERE (p.code IS NULL OR p.code LIKE CONCAT('%', :code, '%')) " +
-            "AND (:ngayTaoStart IS NULL OR :ngayTaoEnd IS NULL OR (p.endDate BETWEEN :ngayTaoStart AND :ngayTaoEnd)) " +
-            "AND (p.status IS NULL OR p.status = :status) " +
-            "AND (p.name IS NULL OR p.name LIKE CONCAT('%', :name, '%')) ")
+            "WHERE (LOWER(p.code) LIKE LOWER(CONCAT('%', :code, '%')) OR :code IS NULL) AND " +
+            "(p.status = :status OR :status IS NULL) AND " +
+            "(LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')) OR :name IS NULL) AND " +
+            "(:ngayTaoStart IS NULL OR p.startDate <= :ngayTaoStart) AND " +
+            "(:ngayTaoEnd IS NULL OR p.endDate >= :ngayTaoEnd)")
     Page<PromotionSearchDTO> searchPromotion(
             @Param("code") String code,
             @Param("ngayTaoStart") Date ngayTaoStart,

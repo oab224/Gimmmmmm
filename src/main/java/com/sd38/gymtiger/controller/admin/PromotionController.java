@@ -50,20 +50,20 @@ public class PromotionController {
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute("promotion") Promotion promotion, @PathVariable Integer id,
                          RedirectAttributes redirectAttributes) {
-       if(promotionService.update(promotion,id)){
-           redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
-           return "redirect:/tiger/promotion/page";
-       }else{
-           redirectAttributes.addFlashAttribute("error", "Tên khuyến mãi đã tồn tại");
-           return "redirect:/tiger/promotion/page";
-       }
+        if(promotionService.update(promotion,id)){
+            redirectAttributes.addFlashAttribute("mess", "Sửa dữ liệu thành công");
+            return "redirect:/tiger/promotion/page";
+        }else{
+            redirectAttributes.addFlashAttribute("error", "Tên khuyến mãi đã tồn tại");
+            return "redirect:/tiger/promotion/page";
+        }
 
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         promotionService.delete(id);
-        redirectAttributes.addFlashAttribute("mess", "Xoá thành công!!");
+        redirectAttributes.addFlashAttribute("mess", "Đã ngưng hoạt động!");
         return "redirect:/tiger/promotion/page";
 
     }

@@ -410,13 +410,14 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public boolean userCancelOrder(Integer billId) {
+    public boolean userCancelOrder(Integer billId, String cancelReason) {
         Bill bill = billRepository.findById(billId).orElse(null);
         if (bill.getStatus() != 10) {
             return false;
         } else {
             bill.setStatus(0);
             bill.setCancellationDate(new Date());
+            bill.setCancelReason(cancelReason); // Thêm lí do hủy đơn
             if (bill.getVoucher() != null) {
                 Voucher voucher = bill.getVoucher();
                 if (voucher.getStatus() == 10 || voucher.getStatus() == 1) {

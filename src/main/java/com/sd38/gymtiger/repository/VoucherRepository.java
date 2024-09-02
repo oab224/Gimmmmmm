@@ -22,7 +22,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
 
     List<Voucher> findByEndDateBeforeAndStatus(Date endDate, Integer status);
 
-    @Query("SELECT v FROM Voucher v WHERE v.status IN (1, 2) ORDER BY v.id DESC")
+    @Query("SELECT v FROM Voucher v WHERE v.status IN (0, 1, 2) ORDER BY v.id DESC")
     Page<Voucher> findAllByStatusOrderByIdDesc(Pageable pageable);
 
     Page<Voucher> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
@@ -30,12 +30,12 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
     @Query("SELECT v FROM Voucher v WHERE v.status = 1 AND v.minimumPrice <= :cartPrice ORDER BY v.value DESC")
     List<Voucher> getVoucherByCartPrice(@Param("cartPrice") BigDecimal cartPrice);
 
-    @Query(value = "SELECT v.id AS id, v.code AS code, v.name AS name, v.value AS value,v.quantity AS quantity, v.minimumPrice AS minimumPrice, v.startDate AS startDate, v.endDate AS endDate, v.status AS status " +
-            "FROM Voucher v " +
-            "WHERE (v.code IS NULL OR v.code LIKE CONCAT('%', :code, '%')) " +
-            "AND (:ngayTaoStart IS NULL OR :ngayTaoEnd IS NULL OR (v.endDate BETWEEN :ngayTaoStart AND :ngayTaoEnd)) " +
-            "AND (v.status IS NULL OR v.status = :status) " +
-            "AND (v.name IS NULL OR v.name LIKE CONCAT('%', :name, '%')) ")
+    @Query("SELECT v FROM Voucher v WHERE " +
+            "(LOWER(v.code) LIKE LOWER(CONCAT('%', :code, '%')) OR :code IS NULL) AND " +
+            "(v.status = :status OR :status IS NULL) AND " +
+            "(LOWER(v.name) LIKE LOWER(CONCAT('%', :name, '%')) OR :name IS NULL) AND " +
+            "(:ngayTaoStart IS NULL OR v.startDate <= :ngayTaoStart) AND " +
+            "(:ngayTaoEnd IS NULL OR v.endDate >= :ngayTaoEnd)")
     Page<VoucherSearchDTO> searchVoucher(
             @Param("code") String code,
             @Param("ngayTaoStart") Date ngayTaoStart,

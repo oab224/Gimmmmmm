@@ -57,6 +57,7 @@
                             <label>Trạng thái</label>
                             <select class="form-control" name="status" th:value="${status}">
                                 <option value="">Tất cả</option>
+                                <option  value="0" th:selected="${status == 0}">Ngưng hoạt động</option>
                                 <option  value="1" th:selected="${status == 1}">Hoạt động</option>
                                 <option value="2" th:selected="${status == 2}">Đang chờ</option>
                             </select>
@@ -421,6 +422,7 @@
                                 <td th:text="${#dates.format(items.startDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td th:text="${#dates.format(items.endDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                                 <td>
+                                    <span th:if="${items.status == 0}">Ngưng hoạt động</span>
                                     <span th:if="${items.status == 1}">Hoạt động</span>
                                     <span th:if="${items.status == 2}">Đang chờ</span>
                                 </td>
