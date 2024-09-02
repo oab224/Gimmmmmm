@@ -93,15 +93,15 @@
                                 <td class="align-middle">
                                     <div class="input-group quantity mx-auto" style="width: 100px;">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-minus" type="button">
-                                                <i class="fa fa-minus"></i>
+                                            <button class="btn btn-sm btn-primary btn-minus" type="submit" name="action" value="update" title="Update">
+                                                <i class="fa fa-minus" type="submit" name="action" value="update" title="Update"></i>
                                             </button>
                                         </div>
                                         <input type="text" class="form-control form-control-sm  text-center" max="1000000" name="quantity" th:value="${cartItem.quantity}"
                                                 style="margin-left: 5px; margin-right: 5px">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-plus" type="button">
-                                                <i class="fa fa-plus"></i>
+                                            <button class="btn btn-sm btn-primary btn-plus" type="submit" name="action" value="update" title="Update">
+                                                <i class="fa fa-plus" ></i>
                                             </button>
                                         </div>
                                     </div>
@@ -113,8 +113,7 @@
                                     th:text="'₫' + ${#numbers.formatDecimal(cartItem.price * cartItem.quantity, 0, 'COMMA', 0, 'POINT')}"
                                 ></td>
                                 <td class="align-middle">
-                                    <button class="btn btn-sm btn-primary"
-                                            type="submit" name="action" value="update" title="Update"><i class="fa fa-pencil"></i></button>
+  
                                     <button class="btn btn-sm btn-primary"
                                             type="submit" name="action" value="delete" title="Update"><i class="fa fa-times"></i></button>
                                 </td>
