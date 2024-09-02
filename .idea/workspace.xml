@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="26a404a7-46ce-47e3-8dda-c9c95e4f9e2d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cors-anywhere" beforeDir="false" afterPath="$PROJECT_DIR$/cors-anywhere" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cors-anywhere/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/cors-anywhere/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cors-anywhere/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/cors-anywhere/server.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="17898806c17b5a0d8e4ae944ab34dac8594bdbf2" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe" />
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2kza9B6qhwpQwmhKeaaeeoNFrCh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.GymTigerApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/DOWLOAD/GymTiger (1)/GymTiger/src/main/resources/templates/employee&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;1bd48089b297ff4cd3a0e6a2e9887d1c&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\DOWLOAD\GymTiger (1)\GymTiger\src\main\resources\templates\employee" />
+      <recent name="D:\DOWLOAD\GymTiger (1)\GymTiger\src\main\resources\templates\admin" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\DOWLOAD\GymTiger (1)\GymTiger\src\main\resources\templates\employee" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="GymTigerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="GymTiger" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sd38.gymtiger.GymTigerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="26a404a7-46ce-47e3-8dda-c9c95e4f9e2d" name="Changes" comment="" />
+      <created>1724288705778</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1724288705778</updated>
+      <workItem from="1724288707116" duration="8034000" />
+      <workItem from="1724302824135" duration="7469000" />
+      <workItem from="1724377205934" duration="3808000" />
+      <workItem from="1724424967637" duration="2869000" />
+      <workItem from="1724485896981" duration="2781000" />
+      <workItem from="1724513455090" duration="4900000" />
+      <workItem from="1724593674570" duration="1274000" />
+      <workItem from="1724669662918" duration="5825000" />
+      <workItem from="1724722298076" duration="1259000" />
+      <workItem from="1724727547279" duration="9282000" />
+      <workItem from="1724739498309" duration="752000" />
+      <workItem from="1724746544679" duration="1465000" />
+      <workItem from="1724757098142" duration="1825000" />
+      <workItem from="1724805505857" duration="30000" />
+      <workItem from="1724849461596" duration="1281000" />
+      <workItem from="1724907151352" duration="1444000" />
+      <workItem from="1725025356284" duration="1524000" />
+      <workItem from="1725110119109" duration="3064000" />
+      <workItem from="1725124978550" duration="3189000" />
+      <workItem from="1725165109328" duration="8676000" />
+      <workItem from="1725189830230" duration="1458000" />
+      <workItem from="1725191468661" duration="1522000" />
+      <workItem from="1725241825429" duration="17000" />
+      <workItem from="1725241999078" duration="10626000" />
+      <workItem from="1725252828522" duration="4262000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/ProductDetailController.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/ProductDetailController.java</url>
+          <line>71</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/ProductDetailController.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/ProductDetailController.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/user/HomeController.java</url>
+          <line>244</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
