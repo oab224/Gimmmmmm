@@ -97,10 +97,13 @@ public class OfflineCartController {
         else {
             model.addAttribute("khUsername", bill.getCustomer().getName());
         }
-        if(bill.getVoucher()==null){
+        // Get code voucher
+        if(bill.getVoucher()==null || bill.getVoucher().getId() == null){
             model.addAttribute("voucherInfo", "Chọn voucher");
         }
-        else {
+        else{
+            var id = bill.getVoucher().getId();
+            model.addAttribute("voucherId", id);
             model.addAttribute("voucherInfo", bill.getVoucher().getName());
             model.addAttribute("giatrivoucher", Double.parseDouble(String.valueOf(bill.getVoucher().getValue()))+"vnd");
         }
@@ -165,6 +168,16 @@ public class OfflineCartController {
         if (bill.getId()==null){
             return "redirect:/tiger/pos";
         }
+        // Check voucher
+        var voucher = hoadon.getVoucher();
+        var isVoucher = 0;
+        var voucherId = voucher.getId();
+        if(voucherId != null){
+            var check = voucherService.getOne(voucherId);
+            if(check != null && check.getStatus() == 0) {
+                return "redirect:/tiger/pos";
+            }
+        }
         Double tienSauVoucher = Double.parseDouble(String.valueOf(hoadon.getTotalPrice()));
         Double tienKhachDua = Double.parseDouble(String.valueOf(hoadon.getDiscountAmount()));
 
@@ -186,6 +199,7 @@ public class OfflineCartController {
 
         billService.addBillPos(hoadon);
         bill = new Bill();
+        model.addAttribute("IsVoucher", isVoucher);
         return "redirect:/tiger/pos";
     }
 
