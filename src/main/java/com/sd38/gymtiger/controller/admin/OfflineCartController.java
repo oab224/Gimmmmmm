@@ -59,6 +59,9 @@ public class OfflineCartController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CustomerRetailService customerRetailService;
+
     private Bill bill = new Bill();
     private Account currentUser = new Account();
     Date ngayhomnay = Date.valueOf(LocalDate.now());
@@ -90,7 +93,8 @@ public class OfflineCartController {
             List<BillDetail> danhsachHDCT = billService.getLstDetailByBillId(bill.getId());
             model.addAttribute("giohientai", danhsachHDCT);
         }
-
+        // Get list customer
+        List<CustomerRetail> customerList = customerRetailService.GetAll();
         if(bill.getCustomer()==null){
             model.addAttribute("khUsername", "Chọn khách hàng");
         }
@@ -112,6 +116,7 @@ public class OfflineCartController {
         model.addAttribute("giohientai",billService.getLstDetailByBillId(bill.getId()));
         model.addAttribute("hoadoncho", hoadoncho);
         model.addAttribute("listVoucher", danhsachvoucher);
+        model.addAttribute("listCustomer", customerList);
         model.addAttribute("danhsachhoadon", listHdCho);
         model.addAttribute("soLuongHD", listHdCho.size());
         return "/admin/cart/offline-cart";
@@ -174,7 +179,10 @@ public class OfflineCartController {
         var voucherId = voucher.getId();
         if(voucherId != null){
             var check = voucherService.getOne(voucherId);
+            isVoucher = 1;
             if(check != null && check.getStatus() == 0) {
+                isVoucher = 0;
+                model.addAttribute("IsVoucher", isVoucher);
                 return "redirect:/tiger/pos";
             }
         }
@@ -315,8 +323,11 @@ public class OfflineCartController {
     //Khách và voucher
     @RequestMapping("/listKH_tai_quay")
     public String danhSachKhachHang(Model model){
-        if (bill.getId()==null){
+        if (bill == null || bill.getId()==null){
             return "redirect:/tiger/pos";
+        }
+        if(model.containsAttribute("mess")){
+            Integer mess = (Integer) model.getAttribute("mess");
         }
         List<Customer> listCustomer = customerService.findByKwds("%"+kwds+"%");
         model.addAttribute("listKH", listCustomer);
@@ -350,6 +361,10 @@ public class OfflineCartController {
         them_vcr.setVoucher(vcr);
         billService.addBillPos(them_vcr);
         tinhTongTien();
+        return "redirect:/tiger/pos/chonHD/"+bill.getId();
+    }
+    @RequestMapping("/customer-retail/{id}")
+    public String activeCustomer(@PathVariable("id")Integer id){
         return "redirect:/tiger/pos/chonHD/"+bill.getId();
     }
     @RequestMapping("/listKH_tai_quay/huy_vcr")

@@ -133,21 +133,20 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <div th:if="${hoadoncho.customer == null}">Chưa có khách</div>
-                                        <div th:unless="${hoadoncho.customer == null}">
-                                            <table class="thongtinkhach" align="left">
-                                                <tr class="thongtinkhach">
-                                                    <td class="thongtinkhach" rowspan="4"><img th:src="@{${'/assets/avatars/'+hoadoncho.customer.avatar}}" alt="" srcset="" style="width: 100px"/></td>
-                                                    <td class="thongtinkhach" align="left"><h4>Khách hàng: [(${hoadoncho.customer.name})]</h4></td>
-                                                </tr>
-                                                <tr class="thongtinkhach">
-                                                    <td class="thongtinkhach" align="left">SĐT: [(${hoadoncho.customer.phoneNumber})]</td>
-                                                </tr>
-                                                <tr class="thongtinkhach">
-                                                    <td class="thongtinkhach" align="left">Email: [(${hoadoncho.customer.email})]</td>
-                                                </tr>
-                                            </table>
-                                        </div>
+                                        <table>
+                                            <tr>
+                                                <th>Mã KH</th>
+                                                <th>Tên KH</th>
+                                                <th>SĐT</th>
+                                                <th>Email</th>
+                                            </tr>
+                                            <tr th:each="k: ${listCustomer}" class="gachphai1">
+                                                <td>[(${k.id})]</td>
+                                                <td>[(${k.name})]</td>
+                                                <td>[(${k.phoneNumber})]</td>
+                                                <td>[(${k.email})]</td>
+                                            </tr>
+                                        </table>
                                     </div>
                                     <div class="modal-footer">
                                         <a type="button" class="btn btn-primary" href="/tiger/pos/listKH_tai_quay" th:onclick="return dachonHD()">
