@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -95,24 +96,31 @@ public class OfflineCartController {
         }
         // Get list customer
         List<CustomerRetail> customerList = customerRetailService.GetAll();
-        if(bill.getCustomer()==null){
+        if(bill.getCustomerRetail()==null){
             model.addAttribute("khUsername", "Chọn khách hàng");
+            model.addAttribute("checkCustomer", false);
         }
         else {
-            model.addAttribute("khUsername", bill.getCustomer().getName());
+            model.addAttribute("khUsername", bill.getCustomerRetail().getName());
         }
         // Get code voucher
         if(bill.getVoucher()==null || bill.getVoucher().getId() == null){
+            model.addAttribute("StatusVoucher", 2);
             model.addAttribute("voucherInfo", "Chọn voucher");
         }
         else{
             var id = bill.getVoucher().getId();
             model.addAttribute("voucherId", id);
+            var checkVoucher = model.getAttribute("StatusVoucher");
+            if(checkVoucher == null){
+                model.addAttribute("StatusVoucher", bill.getVoucher().getStatus());
+            }
             model.addAttribute("voucherInfo", bill.getVoucher().getName());
             model.addAttribute("giatrivoucher", Double.parseDouble(String.valueOf(bill.getVoucher().getValue()))+"vnd");
         }
 
         hoadoncho = bill;
+
         model.addAttribute("giohientai",billService.getLstDetailByBillId(bill.getId()));
         model.addAttribute("hoadoncho", hoadoncho);
         model.addAttribute("listVoucher", danhsachvoucher);
@@ -169,20 +177,18 @@ public class OfflineCartController {
     }
 
     @RequestMapping("/thanhtoan")
-    public String thanhtoan(@ModelAttribute("hoadoncho")Bill hoadon, Model model){
+    public String thanhtoan(@ModelAttribute("hoadoncho")Bill hoadon, RedirectAttributes redirectAttributes){
+        var error = true;
         if (bill.getId()==null){
             return "redirect:/tiger/pos";
         }
         // Check voucher
         var voucher = hoadon.getVoucher();
-        var isVoucher = 0;
         var voucherId = voucher.getId();
         if(voucherId != null){
             var check = voucherService.getOne(voucherId);
-            isVoucher = 1;
             if(check != null && check.getStatus() == 0) {
-                isVoucher = 0;
-                model.addAttribute("IsVoucher", isVoucher);
+                redirectAttributes.addFlashAttribute("StatusVoucher", 0);
                 return "redirect:/tiger/pos";
             }
         }
@@ -202,12 +208,16 @@ public class OfflineCartController {
         hoadon.setStatus(1);
         hoadon.setEmployee(currentUser);
         hoadon.setCustomer(bill.getCustomer());
-        hoadon.setVoucher(bill.getVoucher());
+        if(voucherId != null){
+            hoadon.setVoucher(bill.getVoucher());
+        }else{
+            hoadon.setVoucher(null);
+        }
         hoadon.setType(bill.getType());
 
         billService.addBillPos(hoadon);
         bill = new Bill();
-        model.addAttribute("IsVoucher", isVoucher);
+        redirectAttributes.addFlashAttribute("StatusVoucher", 1);
         return "redirect:/tiger/pos";
     }
 
@@ -350,7 +360,7 @@ public class OfflineCartController {
     @RequestMapping("/listKH_tai_quay/huy_KH")
     public String huyKhTrongHd(){
         bill = billService.getOneBill(bill.getId());
-        bill.setCustomer(null);
+        bill.setCustomerRetail(null);
         billService.addBillPos(bill);
         return "redirect:/tiger/pos/chonHD/"+bill.getId();
     }
@@ -365,6 +375,10 @@ public class OfflineCartController {
     }
     @RequestMapping("/customer-retail/{id}")
     public String activeCustomer(@PathVariable("id")Integer id){
+        CustomerRetail customerRetail = customerRetailService.getCustomerRetailById(id);
+        Bill billEntity = billService.getOneBill(bill.getId());
+        billEntity.setCustomerRetail(customerRetail);
+        billService.addBillPos(billEntity);
         return "redirect:/tiger/pos/chonHD/"+bill.getId();
     }
     @RequestMapping("/listKH_tai_quay/huy_vcr")

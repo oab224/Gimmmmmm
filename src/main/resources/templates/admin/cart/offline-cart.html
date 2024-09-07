@@ -126,10 +126,10 @@
                         </button>
                         <!-- Modal -->
                         <div class="modal fade" id="modalKH" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Thông tin khách hàng</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel5">Thông tin khách hàng</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -139,18 +139,23 @@
                                                 <th>Tên KH</th>
                                                 <th>SĐT</th>
                                                 <th>Email</th>
+                                                <th></th>
                                             </tr>
                                             <tr th:each="k: ${listCustomer}" class="gachphai1">
                                                 <td>[(${k.id})]</td>
                                                 <td>[(${k.name})]</td>
                                                 <td>[(${k.phoneNumber})]</td>
                                                 <td>[(${k.email})]</td>
+                                                <td><a th:href="@{/tiger/pos/customer-retail/{id}(id=${k.id})}" class="btn btn-primary" style="background-color: dodgerblue" th:onclick="return dachonHD()">Chọn</a></td>
                                             </tr>
                                         </table>
                                     </div>
                                     <div class="modal-footer">
-                                        <a type="button" class="btn btn-primary" href="/tiger/pos/listKH_tai_quay" th:onclick="return dachonHD()">
-                                            Chọn khách hàng khác
+                                        <a id="btnAddCustomer" type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modalAddKH" style="color: #fff;" hidden>
+                                            Thêm khách hàng mới
+                                        </a>
+                                        <a type="button" class="btn btn-primary" style="color: #fff;" th:onclick="return checkHD()">
+                                            Thêm khách hàng mới
                                         </a>
                                         <a type="button" class="btn btn-danger" href="/tiger/pos/listKH_tai_quay/huy_KH" th:onclick="return dachonHD()">
                                             Xóa thông tin
@@ -159,6 +164,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </td>
                 </tr>
                 <tr>
@@ -228,9 +234,7 @@
                     </td>
                 </tr>
             </table>
-
-
-
+            <input type="text" id="isVoucher" th:value="${StatusVoucher}" hidden>
 
             <div style="display: flex; justify-content: space-evenly;">
                 <button type="submit" class="btn btn-primary" th:attr="onclick=|return myFunction1('${voucherCode}')|">Thanh Toán</button>
@@ -240,6 +244,43 @@
         </form>
         <br> <br>
 
+        <!-- Modal thêm thông tin khách hàng-->
+        <form th:action="@{/tiger/customer-retail/add/customer-retail}" method="post" th:object="${customerRetail}">
+
+            <div class="modal fade" id="modalAddKH" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Thêm mới khách hàng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" th:object="${hoadoncho}">
+                            <input name="billId" th:field="*{id}" hidden>
+                            <div class="mb-3" style="text-align: start;">
+                                <h6  class="form-label">Tên khách hàng</h6>
+                                <input type="text" class="form-control" name="name" id="formGroupExampleInput" placeholder="Nhập tên khách hàng">
+                            </div>
+                            <div class="mb-3" style="text-align: start;">
+                                <h6  class="form-label">Số điện thoại</h6>
+                                <input type="text" class="form-control" name="phoneNumber" id="formGroupExampleInput2" placeholder="Nhập số điện thoại">
+                            </div>
+                            <div class="mb-3" style="text-align: start;">
+                                <h6 class="form-label">Email</h6>
+                                <input type="text" class="form-control" name="email" id="formGroupExampleInput3" placeholder="Nhập email">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" style="color: #fff;">
+                                Thêm mới
+                            </button>
+                            <a type="button" class="btn btn-danger" style="color: #fff;" data-bs-dismiss="modal">
+                                Hủy
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         <!-- Modal Start -->
         <div class="modal" id="myModal">
             <div class="modal-dialog">
@@ -338,10 +379,15 @@
 <script th:inline="javascript">
     let thieutienko = false;
 
+    var checkVoucher = document.getElementById("isVoucher").value;
+    console.log(checkVoucher);
+    if(checkVoucher == 0){
+        alert("Voucher của bạn không tồn tại!!!");
+    }
     function myFunction1(code) {
         let kiemtrahoadon = dachonHD();
 
-        if (kiemtrahoadon==false){
+        if (kiemtrahoadon==false) {
             return kiemtrahoadon;
         }
         let text = "Bạn chắc chắn muốn thanh toán không";
@@ -366,6 +412,21 @@
             return false;
         }
         else {
+            return true;
+        }
+    }
+
+    function checkHD(){
+        const kiemtraidHd = document.getElementById('idHdDuocChon').value;
+        if(!kiemtraidHd){
+            alert("Yêu cầu chọn hóa đơn");
+            return false;
+        }
+        else {
+            const button = document.getElementById('btnAddCustomer');
+            if (button) {
+                button.click(); // Tự động click vào nút
+            }
             return true;
         }
     }

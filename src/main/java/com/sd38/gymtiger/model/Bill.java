@@ -85,6 +85,10 @@ public class Bill {
     @JoinColumn(name = "CustomerId", referencedColumnName = "Id")
     private Customer customer;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CustomerRetailId", referencedColumnName = "Id")
+    private CustomerRetail customerRetail;
+
     @ManyToOne()
     @JoinColumn(name = "VoucherId", referencedColumnName = "Id")
     private Voucher voucher;

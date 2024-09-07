@@ -25,4 +25,9 @@ public class CustomerRetailServiceImpl implements CustomerRetailService {
             return null;
         }
     }
+
+    @Override
+    public CustomerRetail getCustomerRetailById(Integer id) {
+        return customerRetailRepository.findById(id).orElse(null);
+    }
 }
