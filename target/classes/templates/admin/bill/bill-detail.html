@@ -145,7 +145,7 @@
                                        th:text="'SĐT: ' + ${bill.phoneNumber}">
                                     </p>
                                     <button type="button" class="btn btn-primary change-address-btn" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"
-                                            th:if="${bill.status == 10}">Đổi địa chỉ nhận hàng</button>
+                                        th:if="${bill.status == 10}">Đổi địa chỉ nhận hàng</button>
                                     <h6 class="font-size-15 mb-2" th:if="${bill.employee != null}"
                                         th:text="'Nhân viên tương tác: ' + ${bill.employee.email}">
                                     </h6>
@@ -403,8 +403,7 @@
                                             Voucher giảm:
                                         </th>
                                         <td class="border-0" style="text-align: right"
-                                            th:text="'₫' + ${#numbers.formatDecimal(bill.discountAmount, 0, 'POINT', 0, 'COMMA')}">
-                                            - $25.50
+                                            th:text="'₫' + ${#numbers.formatDecimal(bill.voucher.value, 0, 'POINT', 0, 'COMMA')}">                                            - $25.50
                                         </td>
                                     </tr>
                                     <!-- end tr -->
@@ -441,7 +440,7 @@
                             <div class="d-print-none mt-4">
                                 <div style="text-align: right">
 
-                                    <a th:href="@{'/tiger/pos/in-hoa-don/'+${bill.id}}"
+                                    <a th:href="@{'/tiger/pos/print-pdf/'+${bill.id}}"
                                        class="btn btn-success me-1"><i class="fa fa-print"></i></a>
 
                                     <a th:href="@{'/tiger/bill'}">
@@ -453,19 +452,19 @@
                             </div>
                         </div>
                         <div class="py-2" th:if="${bill.status != 0 && bill.status != 1}">
-                            <a th:href="@{'/tiger/bill/detail-cancel-bill/' + ${bill.id}}" class="btn cancel-btn btn btn-danger rounded"
-                               style="float: right; margin-bottom: 10px">
-                                <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
-                            </a>
-                            <!--                            <button class="btn btn-secondary confirm-btn text-wrap rounded" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"-->
-                            <!--                               th:if="${bill.status == 10}">-->
-                            <!--                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</button>-->
+                                <a th:href="@{'/tiger/bill/detail-cancel-bill/' + ${bill.id}}" class="btn cancel-btn btn btn-danger rounded"
+                                        style="float: right; margin-bottom: 10px">
+                                    <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
+                                </a>
+<!--                            <button class="btn btn-secondary confirm-btn text-wrap rounded" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"-->
+<!--                               th:if="${bill.status == 10}">-->
+<!--                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</button>-->
                             <a th:href="@{'/tiger/bill/detail-confirm-bill/' + ${bill.id}}" class="btn btn-primary confirm-btn text-wrap rounded"
                                th:if="${bill.status == 10}">
                                 <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</a>
                             <a th:href="@{'/tiger/bill/detail-shipping-bill/' + ${bill.id}}" class="btn btn-primary shipping-btn text-wrap rounded"
                                th:if="${bill.status == 3}">
-                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao hàng</a>
+                                            <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao hàng</a>
                             <a th:href="@{'/tiger/bill/detail-complete-bill/' + ${bill.id}}" class="btn btn-primary complete-btn text-wrap rounded"
                                th:if="${bill.status == 2}">
                                 <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao thành công</a>

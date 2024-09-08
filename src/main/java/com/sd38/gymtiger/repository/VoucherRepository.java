@@ -22,7 +22,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
 
     List<Voucher> findByEndDateBeforeAndStatus(Date endDate, Integer status);
 
-    @Query("SELECT p FROM Promotion p WHERE p.status IN (0, 1, 2) ORDER BY p.id DESC")
+    @Query("SELECT p FROM Voucher p WHERE p.status IN (0, 1, 2) ORDER BY p.id DESC")
     Page<Voucher> findAllByStatusOrderByIdDesc(Pageable pageable);
 
     Page<Voucher> findAllByNameContainsAndStatusOrderByIdDesc(String name, Integer status, Pageable pageable);
