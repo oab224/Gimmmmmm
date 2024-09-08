@@ -128,12 +128,12 @@ private CustomerService customerService;
     }
 
     @RequestMapping(value = "/cancel-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String cancelBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal) {
+    public String cancelBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal, @RequestParam("cancelReason") String cancelReason) {
         Bill bill = billService.getOneBill(id);
         String email = principal.getName();
         Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.cancelOrder(id, employee);
+            boolean check = billService.cancelOrder(id, employee, cancelReason);
             if (check){
                 attributes.addFlashAttribute("mess", "Huỷ đơn hàng " + bill.getCode() + " thành công");
             } else {
@@ -146,12 +146,12 @@ private CustomerService customerService;
     }
 
     @RequestMapping(value = "/detail-cancel-bill/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String detailCancelBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal) {
+    public String detailCancelBill(@PathVariable Integer id, RedirectAttributes attributes, Principal principal, @RequestParam("cancelReason") String cancelReason) {
         Bill bill = billService.getOneBill(id);
         String email = principal.getName();
         Account employee = accountRepository.findFirstByEmail(email);
         if (bill != null){
-            boolean check = billService.cancelOrder(id, employee);
+            boolean check = billService.cancelOrder(id, employee, cancelReason);
             if (check){
                 attributes.addFlashAttribute("mess", "Huỷ đơn hàng " + bill.getCode() + " thành công");
             } else {
@@ -359,13 +359,11 @@ private CustomerService customerService;
     @GetMapping("/export-bill")
     public void exportBill(
             HttpServletResponse response,
-            @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "sort", defaultValue = "id,asc") String sortField,
             @RequestParam(name = "ngayTaoStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTaoStart,
             @RequestParam(name = "ngayTaoEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date ngayTaoEnd,
             UriComponentsBuilder uriBuilder
     ) throws IOException {
-        int pageSize = 8;
         String[] sortParams = sortField.split(",");
         String sortFieldName = sortParams[0];
         Sort.Direction sortDirection = Sort.Direction.ASC;
@@ -375,13 +373,11 @@ private CustomerService customerService;
         }
 
         Sort sort = Sort.by(sortDirection, sortFieldName);
-        Pageable pageable = PageRequest.of(page, pageSize, sort);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Page<BillDto> listBill;
+        List<BillDto> listBill;
 
         if (ngayTaoStart != null) {
-            listBill = billService.searchListBill(null, ngayTaoStart, ngayTaoEnd, null, null, null, null, pageable);
+            listBill = billService.searchListBillExcel(null, ngayTaoStart, ngayTaoEnd, null, null, null, null, sort);
         } else if (ngayTaoEnd != null){
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(ngayTaoEnd);
@@ -390,13 +386,12 @@ private CustomerService customerService;
             calendar.set(Calendar.SECOND, 59);
             calendar.set(Calendar.MILLISECOND, 999);
             Date ngayEnd = calendar.getTime();
-            listBill = billService.searchListBill(null, null, ngayEnd, null, null, null, null, pageable);
+            listBill = billService.searchListBillExcel(null, null, ngayEnd, null, null, null, null, sort);
         } else {
-            listBill = billService.findAll(pageable);
+            listBill = billService.findAllExcel(sort);
         }
 
         String exportUrl = uriBuilder.path("/export-bill")
-                .queryParam("page", page)
                 .queryParam("sort", sortField)
                 .queryParam("ngayTaoStart", ngayTaoStart)
                 .queryParam("ngayTaoEnd", ngayTaoEnd)

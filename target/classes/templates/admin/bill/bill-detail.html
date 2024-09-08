@@ -145,7 +145,7 @@
                                        th:text="'SĐT: ' + ${bill.phoneNumber}">
                                     </p>
                                     <button type="button" class="btn btn-primary change-address-btn" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"
-                                        th:if="${bill.status == 10}">Đổi địa chỉ nhận hàng</button>
+                                            th:if="${bill.status == 10}">Đổi địa chỉ nhận hàng</button>
                                     <h6 class="font-size-15 mb-2" th:if="${bill.employee != null}"
                                         th:text="'Nhân viên tương tác: ' + ${bill.employee.email}">
                                     </h6>
@@ -244,12 +244,6 @@
                             <div class="row">
                                 <div class="col-6">
                                     <h5 class="font-size-15">Danh sách đơn hàng</h5>
-                                </div>
-                                <div class="col-6" th:if="${bill.status == 10}">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#productModal" style="float: right">
-                                        Thêm sản phẩm
-                                    </button>
                                 </div>
                             </div>
                             <!-- Product Modal -->
@@ -353,7 +347,6 @@
                                         <th>Giá tiền</th>
                                         <th>Số lượng</th>
                                         <th class="text-end" style="width: 120px">Thành tiền</th>
-                                        <th>Thao tác</th>
                                     </tr>
                                     </thead>
                                     <!-- end thead -->
@@ -390,12 +383,6 @@
                                             <td class="text-end"
                                                 th:text="'₫' + ${#numbers.formatDecimal(billDetail.price * billDetail.quantity, 0, 'POINT', 0, 'COMMA')}">
                                                 $ 245.50
-                                            </td>
-                                            <td th:if="${bill.status == 10}">
-                                                <button class="btn btn-sm btn-primary"
-                                                        type="submit" name="action" value="update" title="Sửa"><i class="fa fa-pencil"></i></button>
-                                                <button class="btn btn-sm btn-primary"
-                                                        type="submit" name="action" value="delete" title="Xoá"><i class="fa fa-times"></i></button>
                                             </td>
                                         </form>
                                     </tr>
@@ -454,7 +441,7 @@
                             <div class="d-print-none mt-4">
                                 <div style="text-align: right">
 
-                                    <a th:href="@{'/tiger/pos/print-pdf/'+${bill.id}}"
+                                    <a th:href="@{'/tiger/pos/in-hoa-don/'+${bill.id}}"
                                        class="btn btn-success me-1"><i class="fa fa-print"></i></a>
 
                                     <a th:href="@{'/tiger/bill'}">
@@ -466,19 +453,19 @@
                             </div>
                         </div>
                         <div class="py-2" th:if="${bill.status != 0 && bill.status != 1}">
-                                <a th:href="@{'/tiger/bill/detail-cancel-bill/' + ${bill.id}}" class="btn cancel-btn btn btn-danger rounded"
-                                        style="float: right; margin-bottom: 10px">
-                                    <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
-                                </a>
-<!--                            <button class="btn btn-secondary confirm-btn text-wrap rounded" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"-->
-<!--                               th:if="${bill.status == 10}">-->
-<!--                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</button>-->
+                            <a th:href="@{'/tiger/bill/detail-cancel-bill/' + ${bill.id}}" class="btn cancel-btn btn btn-danger rounded"
+                               style="float: right; margin-bottom: 10px">
+                                <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
+                            </a>
+                            <!--                            <button class="btn btn-secondary confirm-btn text-wrap rounded" data-toggle="modal" data-target="#confirmModal" th:data-id="${bill.id}"-->
+                            <!--                               th:if="${bill.status == 10}">-->
+                            <!--                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</button>-->
                             <a th:href="@{'/tiger/bill/detail-confirm-bill/' + ${bill.id}}" class="btn btn-primary confirm-btn text-wrap rounded"
                                th:if="${bill.status == 10}">
                                 <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận đơn</a>
                             <a th:href="@{'/tiger/bill/detail-shipping-bill/' + ${bill.id}}" class="btn btn-primary shipping-btn text-wrap rounded"
                                th:if="${bill.status == 3}">
-                                            <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao hàng</a>
+                                <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao hàng</a>
                             <a th:href="@{'/tiger/bill/detail-complete-bill/' + ${bill.id}}" class="btn btn-primary complete-btn text-wrap rounded"
                                th:if="${bill.status == 2}">
                                 <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận giao thành công</a>

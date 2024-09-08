@@ -331,7 +331,7 @@
                     </div>
                     <div class="py-2">
                         <a th:href="@{'/detail-cancel-order/' + ${order.id}}" class="cancel-btn btn btn-danger rounded" style="float: right; margin-bottom: 10px"
-                                    th:if="${order.status == 10}">
+                           th:if="${order.status == 10}">
                             <i class="far fa-times-circle"></i>&nbsp;Hủy đơn
                         </a>
                     </div>
@@ -351,19 +351,31 @@
 <script>
     $('.cancel-btn').on('click', function (e) {
         e.preventDefault();
+        const href = $(this).attr('href');
+
         Swal.fire({
             title: "Xác nhận?",
-            text: `Bạn chắc chắn muốn hủy đơn này?`,
+            text: "Bạn chắc chắn muốn hủy đơn này? Vui lòng nhập lý do hủy:",
+            input: 'textarea',
+            inputPlaceholder: 'Nhập lý do hủy',
             icon: "warning",
             showCancelButton: true,
             cancelButtonText: 'Hủy',
             confirmButtonText: 'Xác nhận',
-            reverseButtons: true
+            reverseButtons: true,
+            preConfirm: (reason) => {
+                if (!reason) {
+                    Swal.showValidationMessage("Lý do hủy không được để trống");
+                    return false;
+                }
+                return reason;
+            }
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = $(this).attr('href');
+                const cancelReason = result.value;
+                window.location.href = `${href}?cancelReason=${encodeURIComponent(cancelReason)}`;
             }
-        })
+        });
     });
 </script>
 

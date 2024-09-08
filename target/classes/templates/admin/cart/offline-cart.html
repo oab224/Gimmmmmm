@@ -191,11 +191,19 @@
                                             <tr>
                                                 <th>Mã voucher</th>
                                                 <th>Tên voucher</th>
+                                                <th>Tiền giảm</th>
+                                                <th>Số lượng</th>
+                                                <th>Giá tối thiểu</th>
+                                                <th>Ngày hết hạn</th>
                                                 <th></th>
                                             </tr>
                                             <tr th:each="k: ${listVoucher}" class="gachphai">
                                                 <td>[(${k.code})]</td>
                                                 <td>[(${k.name})]</td>
+                                                <td>[(${k.value})]</td>
+                                                <td>[(${k.quantity})]</td>
+                                                <td>[(${k.minimumPrice})]</td>
+                                                <td>[(${k.endDate})]</td>
                                                 <td><a th:href="@{/tiger/pos/chonVoucher/{id}(id=${k.id})}" class="btn btn-primary" style="background-color: dodgerblue" th:onclick="return dachonHD2([(${k.minimumPrice})])">Chọn</a></td>
                                             </tr>
                                         </table>

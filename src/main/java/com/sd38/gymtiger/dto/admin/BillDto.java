@@ -12,5 +12,6 @@ public interface BillDto {
     BigDecimal getTotalPrice();
     Integer getType();
     Integer getStatus();
+    String getEmployeeName();
 }
 
