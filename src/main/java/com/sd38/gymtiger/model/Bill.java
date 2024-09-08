@@ -77,6 +77,9 @@ public class Bill {
     @Column(name = "Status")
     private Integer status;
 
+    @Column(name = "CancelReason")
+    private String cancelReason;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "EmployeeId", referencedColumnName = "Id")
     private Account employee;

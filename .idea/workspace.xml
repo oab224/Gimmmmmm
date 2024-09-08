@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="26a404a7-46ce-47e3-8dda-c9c95e4f9e2d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/CustomerRetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/CustomerRetailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/model/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/model/Bill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/model/CustomerRetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/model/CustomerRetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/CustomerRetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/CustomerRetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/impl/CustomerRetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/impl/CustomerRetailServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/cart/offline-cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/cart/offline-cart.html" afterDir="false" />
-    </list>
+    <list default="true" id="26a404a7-46ce-47e3-8dda-c9c95e4f9e2d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,41 +35,32 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe" />
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 5
-}</component>
   <component name="ProjectId" id="2kza9B6qhwpQwmhKeaaeeoNFrCh" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.GymTigerApplication.executor&quot;: &quot;Debug&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/GymTiger/Gimmmmmm&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;1bd48089b297ff4cd3a0e6a2e9887d1c&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;E:\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../CodeDao" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\DOWLOAD\GymTiger (1)\GymTiger\src\main\resources\templates\employee" />
@@ -143,6 +125,8 @@
       <workItem from="1725363880772" duration="1822000" />
       <workItem from="1725381156476" duration="494000" />
       <workItem from="1725679530081" duration="23401000" />
+      <workItem from="1725779712739" duration="2800000" />
+      <workItem from="1725782666785" duration="640000" />
     </task>
     <servers />
   </component>
@@ -174,12 +158,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/user/HomeController.java</url>
-          <line>244</line>
+          <line>255</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/user/HomeController.java</url>
-          <line>221</line>
+          <line>230</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -188,38 +172,23 @@
           <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>368</line>
-          <option name="timeStamp" value="49" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>380</line>
-          <option name="timeStamp" value="50" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>157</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/CustomerRetailController.java</url>
           <line>26</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>106</line>
+          <line>126</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>189</line>
+          <line>227</line>
           <option name="timeStamp" value="58" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>114</line>
+          <line>136</line>
           <option name="timeStamp" value="60" />
         </line-breakpoint>
       </breakpoints>

@@ -152,7 +152,8 @@ public class UserBillController {
     }
 
     @RequestMapping(value = "/cancel-order/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String cancelOrder(@PathVariable Integer id, Principal principal, RedirectAttributes attributes) {
+    public String cancelOrder(@PathVariable Integer id, Principal principal,
+                              RedirectAttributes attributes, @RequestParam("cancelReason") String cancelReason) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -163,7 +164,7 @@ public class UserBillController {
             return "redirect:/orders";
         }
         if (customer.getId().equals(bill.getCustomer().getId())){
-            boolean check = billService.userCancelOrder(id);
+            boolean check = billService.userCancelOrder(id, cancelReason);
             if (check){
                 attributes.addFlashAttribute("mess", "Huỷ đơn hàng thành công");
             } else {
@@ -176,7 +177,8 @@ public class UserBillController {
     }
 
     @RequestMapping(value = "/detail-cancel-order/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String detailCancelOrder(@PathVariable Integer id, Principal principal, RedirectAttributes attributes) {
+    public String detailCancelOrder(@PathVariable Integer id, Principal principal,
+                                    RedirectAttributes attributes, @RequestParam("cancelReason") String cancelReason) {
         if (principal == null) {
             return "redirect:/login";
         }
@@ -187,7 +189,7 @@ public class UserBillController {
             return "redirect:/orders";
         }
         if (customer.getId().equals(bill.getCustomer().getId())){
-            boolean check = billService.userCancelOrder(id);
+            boolean check = billService.userCancelOrder(id, cancelReason);
             if (check){
                 attributes.addFlashAttribute("mess", "Huỷ đơn hàng thành công");
             } else {

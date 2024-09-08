@@ -410,12 +410,13 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public boolean userCancelOrder(Integer billId) {
+    public boolean userCancelOrder(Integer billId, String cancelReason) {
         Bill bill = billRepository.findById(billId).orElse(null);
         if (bill.getStatus() != 10) {
             return false;
         } else {
             bill.setStatus(0);
+            bill.setCancelReason(cancelReason); // Thêm lí do hủy đơn
             bill.setCancellationDate(new Date());
             if (bill.getVoucher() != null) {
                 Voucher voucher = bill.getVoucher();
@@ -704,12 +705,13 @@ public class BillServiceImpl implements BillService {
 
     @Override
     @Transactional
-    public boolean cancelOrder(Integer billId, Account account) {
+    public boolean cancelOrder(Integer billId, Account account, String cancelReason) {
         Bill bill = billRepository.findById(billId).orElse(null);
         if (bill.getStatus() == 0) {
             return false;
         } else {
             bill.setStatus(0);
+            bill.setCancelReason(cancelReason); // Thêm lí do hủy đơn
             bill.setCancellationDate(new Date());
             if (bill.getVoucher() != null) {
                 Voucher voucher = bill.getVoucher();
@@ -749,16 +751,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public Page<BillDto> findAll(Pageable pageable) {
-        return billRepository.listBill(pageable);
-    }
-
-    @Override
-    public Page<BillDto> searchListBill(String code, Date ngayTaoStart, Date ngayTaoEnd, Integer status, Integer type, String phoneNumber, String customerName, Pageable pageable) {
-        return billRepository.listSearchBill(code, ngayTaoStart, ngayTaoEnd, status, type, phoneNumber, customerName, pageable);
-    }
-
-    public void exportToExcel(HttpServletResponse response, Page<BillDto> bills, String exportUrl) throws IOException {
+    public void exportToExcel(HttpServletResponse response, List<BillDto> bills, String exportUrl) throws IOException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=bills.xlsx");
 
@@ -774,7 +767,8 @@ public class BillServiceImpl implements BillService {
         headerRow.createCell(3).setCellValue("Ngày đặt");
         headerRow.createCell(4).setCellValue("Tổng tiền");
         headerRow.createCell(5).setCellValue("Trạng thái");
-        headerRow.createCell(6).setCellValue("Loại đơn");
+        headerRow.createCell(6).setCellValue("Người xác nhận");
+        headerRow.createCell(7).setCellValue("Loại đơn");
 
         int rowNum = 1;
         for (BillDto bill : bills) {
@@ -827,9 +821,10 @@ public class BillServiceImpl implements BillService {
                     loaiDonText = "  ";
             }
             row.createCell(5).setCellValue(trangThaiText);
-            row.createCell(6).setCellValue(loaiDonText);
+            row.createCell(6).setCellValue(bill.getEmployeeName());
+            row.createCell(7).setCellValue(loaiDonText);
 
-            XSSFCell linkCell = row.createCell(7);
+            XSSFCell linkCell = row.createCell(8);
             XSSFRichTextString linkText = new XSSFRichTextString(" ");
             CreationHelper createHelper = workbook.getCreationHelper();
             XSSFHyperlink hyperlink = (XSSFHyperlink) createHelper.createHyperlink(HyperlinkType.URL);
@@ -837,7 +832,7 @@ public class BillServiceImpl implements BillService {
             linkCell.setHyperlink(hyperlink);
             linkCell.setCellValue(linkText);
 
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 8; i++) {
                 sheet.autoSizeColumn(i);
             }
         }
@@ -847,6 +842,26 @@ public class BillServiceImpl implements BillService {
             workbook.close();
             outputStream.flush();
         }
+    }
+
+    @Override
+    public Page<BillDto> findAll(Pageable pageable) {
+        return billRepository.listBill(pageable);
+    }
+
+    @Override
+    public Page<BillDto> searchListBill(String code, Date ngayTaoStart, Date ngayTaoEnd, Integer status, Integer type, String phoneNumber, String customerName, Pageable pageable) {
+        return billRepository.listSearchBill(code, ngayTaoStart, ngayTaoEnd, status, type, phoneNumber, customerName, pageable);
+    }
+
+    @Override
+    public List<BillDto> findAllExcel(Sort sort) {
+        return billRepository.findAllExcel(sort);
+    }
+
+    @Override
+    public List<BillDto> searchListBillExcel(String code, Date ngayTaoStart, Date ngayTaoEnd, Integer status, Integer type, String phoneNumber, String customerName, Sort sort) {
+        return billRepository.searchListBillExcel(code, ngayTaoStart, ngayTaoEnd, status, type, phoneNumber, customerName, sort);
     }
 
     @Override

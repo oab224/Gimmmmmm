@@ -2,6 +2,7 @@
 package com.sd38.gymtiger.controller.admin;
 
 import com.lowagie.text.*;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -14,15 +15,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
@@ -194,6 +200,7 @@ public class OfflineCartController {
         }
         Double tienSauVoucher = Double.parseDouble(String.valueOf(hoadon.getTotalPrice()));
         Double tienKhachDua = Double.parseDouble(String.valueOf(hoadon.getDiscountAmount()));
+        Timestamp orderDate = new Timestamp(System.currentTimeMillis());
 
         Double tinhtien = tienKhachDua - tienSauVoucher;
         String chuThich = "Tiền thừa của khách là: "+ tinhtien;
@@ -201,7 +208,7 @@ public class OfflineCartController {
         hoadon.setPaymentDate(ngayhomnay);
         hoadon.setConfirmationDate(ngayhomnay);
         hoadon.setCompletionDate(ngayhomnay);
-        hoadon.setOrderDate(bill.getOrderDate());
+        hoadon.setOrderDate(orderDate);
         hoadon.setShippingFee(BigDecimal.valueOf(0.0));
         hoadon.setCreateDate(bill.getCreateDate());
         hoadon.setUpdateDate(ngayhomnay);
@@ -425,95 +432,105 @@ public class OfflineCartController {
         billService.deleteBillDetail(cthd_bi_xoa);
     }
 
-    public void pdfHeader(PdfPTable table){
-        PdfPCell cell = new PdfPCell();
-        cell.setBackgroundColor(java.awt.Color.lightGray);
-        cell.setPadding(5);
+    @GetMapping("/print-pdf/{id}")
+    public ResponseEntity<byte[]> inHoaDon(@PathVariable Integer id) throws DocumentException, IOException {
+        Bill bill = billService.getOneBill(id);
+        List<BillDetail> billDetails = billService.getLstDetailByBillId(id);
 
-        Font font = FontFactory.getFont(FontFactory.HELVETICA);
-        font.setColor(java.awt.Color.white);
-
-        cell.setPhrase(new Phrase("Sản phẩm", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Số lượng", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Giá", font));
-        table.addCell(cell);
-    };
-
-    public void writeDataPdf(PdfPTable table, Integer idHD){
-        for (BillDetail g: billService.getLstDetailByBillId(idHD)){
-            table.addCell(g.getProductDetail().getProduct().getName()+"/"+g.getProductDetail().getSize().getName()+"/"+g.getProductDetail().getColor().getName());
-            table.addCell(String.valueOf(g.getQuantity()));
-            table.addCell(String.valueOf(g.getPrice()));
-        }
-    }
-
-    public void preparepdf(HttpServletResponse response, Integer id) throws IOException {
-        String maHD = billService.getOneBill(id).getCode();
-        Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, response.getOutputStream());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+        PdfWriter.getInstance(document, baos);
 
         document.open();
-        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+        BaseFont bf = BaseFont.createFont("c:/windows/fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font titleFont = new Font(bf, 20, Font.BOLD);
+        Font headerFont = new Font(bf, 12, Font.BOLD);
+        Font normalFont = new Font(bf, 11, Font.NORMAL);
 
-        font.setSize(18);
-        font.setColor(Color.black);
+        // Tiêu đề
+        Paragraph title = new Paragraph("Hóa Đơn", titleFont);
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingAfter(20);
+        document.add(title);
 
-        Paragraph p = new Paragraph("Hóa đơn: "+maHD, font);
-        p.setAlignment(Paragraph.ALIGN_CENTER);
-        document.add(p);
+        // Thông tin hóa đơn
+        PdfPTable infoTable = new PdfPTable(new float[]{1, 4});
+        infoTable.setWidthPercentage(100);
+        infoTable.addCell(createCell("Mã hóa đơn:", headerFont, Element.ALIGN_LEFT, false));
+        infoTable.addCell(createCell(bill.getCode(), normalFont, Element.ALIGN_LEFT, false));
+        infoTable.addCell(createCell("Ngày:", headerFont, Element.ALIGN_LEFT, false));
+        infoTable.addCell(createCell(LocalDate.now().toString(), normalFont, Element.ALIGN_LEFT, false));
 
-        Paragraph p1 = new Paragraph("Thời gian: "+ngayhomnay, font);
-        p.setAlignment(Paragraph.ALIGN_RIGHT);
-        document.add(p1);
+        // Thêm thông tin khách hàng
+        if (bill.getCustomer() != null) {
+            infoTable.addCell(createCell("Khách hàng:", headerFont, Element.ALIGN_LEFT, false));
+            infoTable.addCell(createCell(bill.getCustomer().getName(), normalFont, Element.ALIGN_LEFT, false));
+        }
 
-        Paragraph p2 = new Paragraph("Danh sách mua hàng: ", font);
-        p.setAlignment(Paragraph.ALIGN_CENTER);
-        document.add(p2);
+        // Thêm thông tin nhân viên tạo
+        if (bill.getEmployee() != null) {
+            infoTable.addCell(createCell("Nhân viên:", headerFont, Element.ALIGN_LEFT, false));
+            infoTable.addCell(createCell(bill.getEmployee().getName(), normalFont, Element.ALIGN_LEFT, false));
+        }
 
-        PdfPTable table = new PdfPTable(3);
-        table.setWidthPercentage(100f);
-        table.setWidths(new float[]{3.3f, 3.3f, 3.3f});
-        table.setSpacingBefore(10);
+        infoTable.setSpacingAfter(20);
+        document.add(infoTable);
 
-        pdfHeader(table);
-        writeDataPdf(table, id);
+        // Bảng chi tiết sản phẩm
+        PdfPTable table = new PdfPTable(new float[] { 3, 1, 2, 2 });
+        table.setWidthPercentage(100);
+        table.addCell(createCell("Sản phẩm", headerFont, Element.ALIGN_CENTER, true));
+        table.addCell(createCell("Số lượng", headerFont, Element.ALIGN_CENTER, true));
+        table.addCell(createCell("Đơn giá", headerFont, Element.ALIGN_CENTER, true));
+        table.addCell(createCell("Thành tiền", headerFont, Element.ALIGN_CENTER, true));
 
+        for (BillDetail item : billDetails) {
+            table.addCell(
+                    createCell(item.getProductDetail().getProduct().getName(), normalFont, Element.ALIGN_LEFT, true));
+            table.addCell(createCell(String.valueOf(item.getQuantity()), normalFont, Element.ALIGN_CENTER, true));
+            table.addCell(createCell(String.format("%,.0f", item.getPrice()), normalFont, Element.ALIGN_RIGHT, true));
+            table.addCell(
+                    createCell(String.format("%,.0f", item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))),
+                            normalFont, Element.ALIGN_RIGHT, true));
+        }
+        table.setSpacingAfter(20);
         document.add(table);
 
-        Font priceFont =  FontFactory.getFont(FontFactory.TIMES_ROMAN);
-        priceFont.setColor(java.awt.Color.black);
+        // Thông tin tổng cộng
+        PdfPTable summaryTable = new PdfPTable(2);
+        summaryTable.setWidthPercentage(60);
+        summaryTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-        Paragraph tienGoc = new Paragraph("Tổng hóa đơn: "+billService.getOneBill(id).getPrice(), priceFont);
-        Paragraph tienThucTe = new Paragraph("Thanh toán: "+billService.getOneBill(id).getTotalPrice(), priceFont);
-        Paragraph khuyenMai = new Paragraph("Giảm giá: 0", priceFont);
-        try {
-            if (billService.getOneBill(id).getVoucher()!=null){
-                khuyenMai = new Paragraph("Giảm giá: "+billService.getOneBill(id).getVoucher().getValue(), priceFont);
-            }
-        }catch (Exception e){}
+        double voucherValue = bill.getVoucher() != null ? bill.getVoucher().getValue().doubleValue() : 0;
+        double totalPayment = bill.getTotalPrice().doubleValue() - voucherValue;
 
-        document.add(tienGoc);
-        document.add(khuyenMai);
-        document.add(tienThucTe);
+        summaryTable.addCell(createCell("Tổng cộng:", headerFont, Element.ALIGN_LEFT, false));
+        summaryTable.addCell(
+                createCell(String.format("%,.0f VNĐ", bill.getTotalPrice()), normalFont, Element.ALIGN_RIGHT, false));
+        summaryTable.addCell(createCell("Voucher:", headerFont, Element.ALIGN_LEFT, false));
+        summaryTable
+                .addCell(createCell(String.format("%,.0f VNĐ", voucherValue), normalFont, Element.ALIGN_RIGHT, false));
+        summaryTable.addCell(createCell("Tổng thanh toán:", headerFont, Element.ALIGN_LEFT, false));
+        summaryTable
+                .addCell(createCell(String.format("%,.0f VNĐ", totalPayment), normalFont, Element.ALIGN_RIGHT, false));
+
+        document.add(summaryTable);
 
         document.close();
+
+        byte[] pdfBytes = baos.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename", "hoa-don-" + bill.getCode() + ".pdf");
+
+        return ResponseEntity.ok().headers(headers).body(pdfBytes);
     }
 
-    @RequestMapping("/print-pdf/{id}")
-    public void inHD(@PathVariable("id") Integer id, HttpServletResponse response){
-        try {
-            response.setContentType("application/pdf");
-            String headerKey = "Content-Disposition";
-            String headerValue = "attachment; filename=the_bill.pdf";
-
-            response.setHeader(headerKey, headerValue);
-            preparepdf(response, id);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    private PdfPCell createCell(String content, Font font, int alignment, boolean hasBorder) {
+        PdfPCell cell = new PdfPCell(new Phrase(content, font));
+        cell.setHorizontalAlignment(alignment);
+        cell.setBorder(hasBorder ? Rectangle.BOX : Rectangle.NO_BORDER);
+        return cell;
     }
 }

@@ -136,6 +136,12 @@
             </th>
             <th scope="col">Loại đơn</th>
             <th scope="col">Trạng thái</th>
+            <th scope="col">Người xác nhận
+                <a th:href="@{/tiger/bill(page=0, sort=${sortField == 'employeeName' && sortDirection == 'asc' ? 'employeeName,desc' : 'employeeName,asc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↑</a>
+                <a th:href="@{/tiger/bill(page=0, sort=${sortField == 'employeeName' && sortDirection == 'desc' ? 'employeeName,asc' : 'employeeName,desc'}, code=${code}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, status=${status}, type=${type}, customerName=${customerName}, phoneNumber=${phoneNumber})}"
+                   class="sort-link">↓</a>
+            </th>
             <th scope="col">Thao tác</th>
         </tr>
         </thead>
@@ -174,6 +180,7 @@
                     </span>
 
             </td>
+            <td th:text="${item.employeeName}"></td>
             <td>
                 <div class="d-flex align-items-center">
                     <a th:href="@{'/tiger/bill/confirm-bill/' + ${item.id}}" th:if="${item.status == 10}"
@@ -249,32 +256,31 @@
             //button hủy đơn
             $('.cancel-btn').on('click', function (e) {
                 e.preventDefault();
-                // Create a text area for the reason
-                const reasonTextArea = document.createElement('textarea');
-                reasonTextArea.placeholder = 'Nhập lý do hủy đơn';
-                reasonTextArea.style.width = '100%';
-                reasonTextArea.style.height = '80px';
+                const href = $(this).attr('href');
 
                 Swal.fire({
                     title: "Xác nhận?",
-                    text: `Bạn chắc chắn muốn hủy đơn này?`,
+                    text: "Bạn chắc chắn muốn hủy đơn này? Vui lòng nhập lý do hủy:",
+                    input: 'textarea',
+                    inputPlaceholder: 'Nhập lý do hủy',
                     icon: "warning",
                     showCancelButton: true,
-                    html: `<p>Lý do hủy đơn:</p>
-                       ${reasonTextArea.outerHTML}`,
                     cancelButtonText: 'Hủy',
                     confirmButtonText: 'Xác nhận',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    preConfirm: (reason) => {
+                        if (!reason) {
+                            Swal.showValidationMessage("Lý do hủy không được để trống");
+                            return false;
+                        }
+                        return reason;
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        const reason = reasonTextArea.value;
-
-                        // Add the reason to the URL if needed
-                        const url = $(this).attr('href');
-                        const updatedUrl = reason ? `${url}?reason=${encodeURIComponent(reason)}` : url;
-                        window.location.href = $(this).attr('href');
+                        const cancelReason = result.value;
+                        window.location.href = `${href}?cancelReason=${encodeURIComponent(cancelReason)}`;
                     }
-                })
+                });
             });
 
             //button xác nhận đơn hàng

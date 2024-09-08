@@ -9,6 +9,7 @@ import com.sd38.gymtiger.model.SessionCart;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.io.IOException;
 import java.util.Date;
@@ -47,11 +48,11 @@ public interface BillService {
 
     List<Bill> getAllOrders(Integer customerId);
 
-    boolean userCancelOrder(Integer billId);
+    boolean userCancelOrder(Integer billId, String cancelReason);
 
     boolean confirmOrder(Integer billId, Account account);
 
-    boolean cancelOrder(Integer billId, Account account);
+    boolean cancelOrder(Integer billId, Account account, String cancelReason);
 
     boolean shippingOrder(Integer id, Account account);
 
@@ -76,9 +77,14 @@ public interface BillService {
 
     String generateBillCode();
 
-    void exportToExcel(HttpServletResponse response, Page<BillDto> bills, String exportUrl) throws IOException;
-
     List<Bill> findAllByStatus(Integer status);
 
     void deleteBillDetail(BillDetail id);
+
+    void exportToExcel(HttpServletResponse response, List<BillDto> bills, String exportUrl) throws IOException;
+
+    List<BillDto> findAllExcel(Sort sort);
+
+    List<BillDto> searchListBillExcel(String code, Date ngayTaoStart, Date ngayTaoEnd, Integer status, Integer type, String phoneNumber, String customerName, Sort sort);
+
 }
