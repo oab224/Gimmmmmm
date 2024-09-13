@@ -10,93 +10,6 @@
 <body>
 <section layout:fragment="content">
     <div><h1 align="center">QUẦY HÀNG</h1></div>
-    <article class="hienCTHD" style="float: left">
-        <table style="width: 100%">
-            <tr>
-                <td><a type="button" href="/tiger/pos/litSP" class="btn btn-success" style="float: left" th:onclick="return dachonHD()">Thêm sản phẩm</a></td>
-                <td><p>[(${yeucauchonHD})]</p></td>
-                <td><p>[(${thongbaogioihanHD})]</p></td>
-                <td><a type="button" href="/tiger/pos/addHD" class="btn btn-success" style="float: right" th:onclick="return taoHD([(${soLuongHD})])">Tạo hóa đơn</a></td>
-            </tr>
-        </table>
-
-
-
-
-        <h3 align="center" class="daude">Sản Phẩm Trong Hóa Đơn</h3>
-
-        <table align="center" class="danhsach" style="font-size: 12px">
-            <tr class="gachphai">
-                <th class="gachphai"></th>
-                <th class="gachphai">Tên sản phẩm</th>
-                <th class="gachphai">Giá/sản phẩm</th>
-                <th class="gachphai">Số lượng</th>
-                <th><th/>
-            </tr>
-            <tr class="gachphai" th:each="k: ${giohientai}">
-                <td class="gachphai"><img th:src="@{${'/assets/product/'+k.productDetail.product.listImage.get(0).name}}" alt="" srcset="" style="width: 30px"/></td>
-                <td class="gachphai">[(${k.productDetail.product.name})]</td>
-                <td class="gachphai">[(${k.price})]</td>
-                <td class="gachphai">[(${k.quantity})]</td>
-                <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#exampleModal'+k.id}" style="background-color: dodgerblue; color: white">
-                        Chi tiết
-                    </button>
-                </td>
-
-                <td><!-- Button trigger modal -->
-
-
-                    <!-- Modal -->
-                    <div class="modal fade" th:id="${'exampleModal'+k.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Thông tin sản phẩm</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <table style="font-size: 16px">
-                                        <tr>
-                                            <td rowspan="6"><img th:src="@{${'/assets/product/'+k.productDetail.product.listImage.get(0).name}}" alt="" srcset="" style="width: 70%"/></td>
-                                            <td><h4>[(${k.productDetail.product.name})]</h4></td>
-                                        </tr>
-                                        <tr class="cochuTTSP">
-                                            <td class="cochuTTSP">Giá bán: [(${k.productDetail.price})]</td>
-                                        </tr>
-                                        <tr class="cochuTTSP">
-                                            <td>Chất liệu: [(${k.productDetail.product.material.name})]</td>
-                                        </tr>
-                                        <tr class="cochuTTSP">
-                                            <td>Màu sắc: [(${k.productDetail.color.name})]</td>
-                                        </tr>
-                                        <tr class="cochuTTSP">
-                                            <td>Kích cỡ: [(${k.productDetail.size.name})]</td>
-                                        </tr>
-                                        <tr class="cochuTTSP">
-                                            <td>
-                                                <form th:action="@{/tiger/pos/doi_so_luong_tai_quay/{id}(id=${k.id})}" method="post">
-                                                    <label>Số lượng trong hóa đơn:</label>
-                                                    <input type="number" name="soluongmoi" style="width: 50px" th:value="${k.quantity}" th:id="${'slcua'+k.id}">
-                                                    <button type="submit" class="btn btn-primary" th:onclick="return kiemsoluong([(${k.quantity})], [(${k.productDetail.quantity})], [(${k.id})])">Thay đổi số lượng</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <a th:href="@{/tiger/pos/xoa-hdtq/{id}(id=${k.id})}" class="btn btn-danger" style="background-color: crimson">Xóa khỏi giỏ</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div></td>
-
-            </tr>
-        </table>
-    </article >
-
-
     <aside class="hoadondangthuchien" th:align="center" style="float: right">
         <h3 align="center" class="daude">Thông tin hóa đơn</h3>
 
@@ -105,7 +18,6 @@
                 <tr>
                     <td class="noidung">Mã hóa đơn:</td>
                     <td>
-                        <input type="text" class="nhapvao" th:field="*{voucher.id}" th:value="${voucherId}">
                         <input type="text" class="nhapvao" th:field="*{id}" th:id="idHdDuocChon" hidden>
                         <input type="text" class="nhapvao" th:field="*{code}" readonly>
                     </td>
@@ -120,7 +32,7 @@
                 <tr>
                     <td class="noidung">Khách hàng</td>
                     <td>
-<!--                                                <input type="number" class="nhapvao" th:field="*{customer.id}" hidden>-->
+                        <!--                                                <input type="number" class="nhapvao" th:field="*{customer.id}" hidden>-->
                         <button type="button" class="btn btn-primary" style="width: 75%" data-bs-toggle="modal" data-bs-target="#modalKH">
                             [(${khUsername})]
                         </button>
@@ -332,6 +244,132 @@
         </div>
         <!-- Modal End -->
     </aside>
+    <article class="hienCTHD" style="float: left">
+        <table style="width: 100%">
+            <tr>
+                <td><p>[(${yeucauchonHD})]</p></td>
+                <td><p>[(${thongbaogioihanHD})]</p></td>
+                <td><a type="button" href="/tiger/pos/addHD" class="btn btn-success" style="float: right" th:onclick="return taoHD([(${soLuongHD})])">Tạo hóa đơn</a></td>
+            </tr>
+        </table>
+        <h3 align="center" class="daude">Giỏ hàng</h3>
+        <table align="center" class="danhsach" style="font-size: 12px">
+            <tr class="gachphai">
+                <th class="gachphai"></th>
+                <th class="gachphai">Tên sản phẩm</th>
+                <th class="gachphai">Giá/sản phẩm</th>
+                <th class="gachphai">Số lượng</th>
+                <th><th/>
+            </tr>
+            <tr class="gachphai" th:each="k: ${giohientai}">
+                <td class="gachphai"><img th:src="@{${'/assets/product/'+k.productDetail.product.listImage.get(0).name}}" alt="" srcset="" style="width: 30px"/></td>
+                <td class="gachphai">[(${k.productDetail.product.name})]</td>
+                <td class="gachphai">[(${k.price})]</td>
+                <td class="gachphai">[(${k.quantity})]</td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#exampleModal'+k.id}" style="background-color: dodgerblue; color: white">
+                        Chi tiết
+                    </button>
+                </td>
+
+                <td><!-- Button trigger modal -->
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:id="${'exampleModal'+k.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Thông tin sản phẩm</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table style="font-size: 16px">
+                                        <tr>
+                                            <td rowspan="6"><img th:src="@{${'/assets/product/'+k.productDetail.product.listImage.get(0).name}}" alt="" srcset="" style="width: 70%"/></td>
+                                            <td><h4>[(${k.productDetail.product.name})]</h4></td>
+                                        </tr>
+                                        <tr class="cochuTTSP">
+                                            <td class="cochuTTSP">Giá bán: [(${k.productDetail.price})]</td>
+                                        </tr>
+                                        <tr class="cochuTTSP">
+                                            <td>Chất liệu: [(${k.productDetail.product.material.name})]</td>
+                                        </tr>
+                                        <tr class="cochuTTSP">
+                                            <td>Màu sắc: [(${k.productDetail.color.name})]</td>
+                                        </tr>
+                                        <tr class="cochuTTSP">
+                                            <td>Kích cỡ: [(${k.productDetail.size.name})]</td>
+                                        </tr>
+                                        <tr class="cochuTTSP">
+                                            <td>
+                                                <form th:action="@{/tiger/pos/doi_so_luong_tai_quay/{id}(id=${k.id})}" method="post">
+                                                    <label>Số lượng trong hóa đơn:</label>
+                                                    <input type="number" name="soluongmoi" style="width: 50px" th:value="${k.quantity}" th:id="${'slcua'+k.id}">
+                                                    <button type="submit" class="btn btn-primary" th:onclick="return kiemsoluong([(${k.quantity})], [(${k.productDetail.quantity})], [(${k.id})])">Thay đổi số lượng</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a th:href="@{/tiger/pos/xoa-hdtq/{id}(id=${k.id})}" class="btn btn-danger" style="background-color: crimson">Xóa khỏi giỏ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div></td>
+            </tr>
+        </table>
+    </article >
+    <article class="hienCTHD" style="float: left">
+        <h3 align="center" class="daude">Danh sách sản phẩm</h3>
+        <div th:if="${productPage != null and !productPage.empty}">
+            <table align="center" class="danhsach" style="font-size: 12px">
+                <thead>
+                <tr class="gachphai">
+                    <th class="gachphai">Mã sản phẩm</th>
+                    <th class="gachphai">Tên sản phẩm</th>
+                    <th class="gachphai">Giá bán trung bình</th>
+                    <th class="gachphai">Tổng số lượng tồn</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="gachphai" th:each="product : ${productPage.content}">
+                    <td class="gachphai" th:text="${product.code}"></td>
+                    <td class="gachphai" th:text="${product.name}"></td>
+                    <td class="gachphai" th:text="${#numbers.formatDecimal(#aggregates.avg(product.listProductDetail.![price]), 0, 'COMMA', 0, 'POINT')}"></td>
+                    <td class="gachphai" th:text="${#aggregates.sum(product.listProductDetail.![quantity])}"></td>
+                    <td>
+                    <td>
+                        <a th:href="@{/tiger/pos/product-detail/{id}(id=${product.id})}" class="btn btn-primary btn-chon-san-pham" style="background-color: dodgerblue">Chọn</a>
+                    </td>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation" th:if="${productPage.totalPages > 1}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${productPage.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/tiger/pos(page=${productPage.number - 1})}" tabindex="-1">Trước</a>
+                    </li>
+
+                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, productPage.totalPages - 1)}"
+                        th:classappend="${pageNumber == productPage.number} ? 'active'">
+                        <a class="page-link" th:href="@{/tiger/pos(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${productPage.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/tiger/pos(page=${productPage.number + 1})}">Sau</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div th:if="${productPage == null or productPage.empty}">
+            <p>Không có dữ liệu sản phẩm.</p>
+        </div>
+    </article>
 
 </section>
 
@@ -344,6 +382,33 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <link rel="stylesheet" th:href="@{/admin/assets/css/kieuBanTaiQuay.css}">
 <style>
+    nav[aria-label="Page navigation"] {
+        background-color: white; /* Nền trắng cho toàn bộ phần nav */
+        padding: 10px;
+        box-shadow: none; /* Loại bỏ đổ bóng nếu có */
+        border: none; /* Loại bỏ đường viền nếu có */
+    }
+
+    .pagination {
+        background-color: white;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 0; /* Loại bỏ khoảng trống bên dưới */
+    }
+
+    .pagination .page-link {
+        color: #007bff;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #e9ecef;
+    }
+
+    .pagination .active .page-link {
+        background-color: #007bff;
+        color: white;
+    }
+
     article, aside{
         background-color: white;
     }
@@ -381,6 +446,10 @@
     }
     .thongtinkhach{
         border-collapse: collapse;
+    }
+    .text-danger {
+        color: #dc3545;
+        font-weight: bold;
     }
 </style>
 
@@ -523,4 +592,11 @@
     document.getElementById("tienKhachDua").addEventListener("change", tinhTienThua);
     document.getElementById("giaSale").addEventListener("change", tinhTienThua);
 
+    document.querySelectorAll('.btn-chon-san-pham').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            if (!dachonHD()) {
+                event.preventDefault();
+            }
+        });
+    });
 </script>

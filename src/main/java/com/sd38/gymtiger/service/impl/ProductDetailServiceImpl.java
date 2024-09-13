@@ -137,6 +137,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
+    public List<ProductDetail> getProductDetailsByProductId(int id) {
+        return productDetailRepository.findAllByProduct_IdOrderByIdAsc(id);
+    }
+
+    @Override
     public String importExcelProduct(MultipartFile file, Integer productId) throws IOException {
         if (productDetailExcelUtil.isValidExcel(file)) {
             String uploadDir = "./src/main/resources/static/filecustom/productdetail/";
@@ -297,5 +302,10 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Override
     public void simplizedUpdate(Integer id, ProductDetail productDetail) {
         productDetailRepository.save(productDetail);
+    }
+
+    @Override
+    public ProductDetail findBySizeIdAndColorId(int productId, int sizeId, int colorId) {
+        return productDetailRepository.findBySizeIdAndColorId(productId, sizeId, colorId);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -146,4 +147,8 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
             "and prd.product.material.code like ?3 " +
             "and prd.size.code like ?4")
     List<ProductDetail> locSpTaiQuay(String s, String colorCode, String matrCode, String sizeName);
+
+    @Query("SELECT p FROM ProductDetail p WHERE p.product.id = :productId AND p.size.id = :sizeId AND p.color.id = :colorId")
+    ProductDetail findBySizeIdAndColorId(Integer productId, Integer sizeId, Integer colorId);
+
 }

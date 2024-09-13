@@ -674,4 +674,21 @@ public class ProductViewServiceImpl implements ProductViewService {
         }
         return null;
     }
+
+    public ProductDetailResponse getProductDetailQuantityAndPrice(Integer productId, Integer sizeId, Integer colorId) {
+        Product product = getOne(productId);
+        if (product != null) {
+            for (ProductDetail detail : product.getListProductDetail()) {
+                if (detail.getSize().getId().equals(sizeId) && detail.getColor().getId().equals(colorId)) {
+                    BigDecimal price = detail.getPrice();
+                    Float discountValue = getValueDiscountByProductId(productId);
+                    if (discountValue != null) {
+                        price = calculatePriceToPriceDiscount(price, discountValue);
+                    }
+                    return new ProductDetailResponse(detail.getQuantity(), price);
+                }
+            }
+        }
+        return new ProductDetailResponse(0, BigDecimal.ZERO);
+    }
 }

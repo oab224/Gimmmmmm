@@ -6,15 +6,22 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.sd38.gymtiger.dto.common.ProductAndValueDiscountDto;
+import com.sd38.gymtiger.dto.common.impl.ProductAndValueDiscountDtoImpl;
 import com.sd38.gymtiger.model.*;
+import com.sd38.gymtiger.model.Image;
 import com.sd38.gymtiger.repository.ColorRepository;
 import com.sd38.gymtiger.repository.MaterialRepository;
 import com.sd38.gymtiger.repository.SizeRepository;
+import com.sd38.gymtiger.response.ColorDetailResponse;
+import com.sd38.gymtiger.response.ProductDiscountHomeResponse;
+import com.sd38.gymtiger.response.SizeDetailResponse;
 import com.sd38.gymtiger.service.*;
-import jakarta.servlet.http.HttpServletResponse;
+import com.sd38.gymtiger.service.user.ProductViewService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +39,11 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -40,7 +51,7 @@ import java.util.List;
 public class OfflineCartController {
 
     @Autowired
-    private OfflineCartService offlineCartService;
+    private ProductViewService productViewService;
 
     @Autowired
     private BillService billService;
@@ -69,6 +80,12 @@ public class OfflineCartController {
     @Autowired
     private CustomerRetailService customerRetailService;
 
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private ImageService imageService;
+
     private Bill bill = new Bill();
     private Account currentUser = new Account();
     Date ngayhomnay = Date.valueOf(LocalDate.now());
@@ -83,9 +100,12 @@ public class OfflineCartController {
 
     private String kwds = "";
 
+    private Bill currentBill;
+
     @GetMapping()
     public String cart(Model model, HttpSession session, Principal principal,
-                       @ModelAttribute("hoadoncho")Bill hoadoncho) {
+                       @ModelAttribute("hoadoncho")Bill hoadoncho,
+                       @RequestParam(defaultValue = "0") int page) {
         String currentUserName = principal.getName();
         currentUser = accountService.findFirstByEmail(currentUserName);
 
@@ -126,7 +146,11 @@ public class OfflineCartController {
         }
 
         hoadoncho = bill;
+        Page<Product> productPage = productService.getProducts(page);
 
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("page", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("giohientai",billService.getLstDetailByBillId(bill.getId()));
         model.addAttribute("hoadoncho", hoadoncho);
         model.addAttribute("listVoucher", danhsachvoucher);
@@ -136,26 +160,148 @@ public class OfflineCartController {
         return "/admin/cart/offline-cart";
     }
 
+    @GetMapping("/product-detail/{productId}")
+    public String productDetail(@PathVariable Integer productId, Model model) {
+        // 1. Lấy thông tin chi tiết của sản phẩm
+        Product product = productViewService.getOne(productId);
+        if (product == null) {
+            return "redirect:/tiger/pos";
+        }
+
+        // 2. Lấy số lượng sản phẩm còn tồn
+        int numberProductDetail = product.getListProductDetail().stream()
+                .mapToInt(ProductDetail::getQuantity)
+                .sum();
+
+        // 3. Lấy danh sách sản phẩm gợi ý
+        List<ProductDiscountHomeResponse> listProductYouMayLikeResponse = productViewService.getRandomProductAndProductDiscount();
+
+        // 4. Lấy giá trị giảm giá và giá cao nhất/thấp nhất
+        ProductAndValueDiscountDto productAndValueDiscountDto = productViewService.getProductAndValueDiscount(productId);
+        BigDecimal priceMax = productViewService.getPriceMaxResponseByProductId(productId);
+        BigDecimal priceMin = productViewService.getPriceMinResponseByProductId(productId);
+
+        // 5. Tính toán giá sau khi giảm
+        BigDecimal priceDiscountMax = productAndValueDiscountDto.getValue() != null
+                ? productViewService.calculatePriceToPriceDiscount(priceMax, productAndValueDiscountDto.getValue())
+                : productViewService.getPriceDiscountMaxResponseByProductId(productId);
+        BigDecimal priceDiscountMin = productAndValueDiscountDto.getValue() != null
+                ? productViewService.calculatePriceToPriceDiscount(priceMin, productAndValueDiscountDto.getValue())
+                : productViewService.getPriceDiscountMinResponseByProductId(productId);
+
+        // 6. Lấy danh sách kích cỡ và màu sắc
+        List<SizeDetailResponse> listProductSize = productViewService.getAllSizeDetailResponse(productId);
+        listProductSize.sort(Comparator.comparing(SizeDetailResponse::getName));
+        List<ColorDetailResponse> listProductColor = productViewService.getAllColorDetailResponse(productId);
+
+        // 7. Lấy danh sách hình ảnh và hình ảnh active
+        List<Image> listImage = imageService.getAllImageByProductId(productId);
+        Image imageActive = imageService.getImageActiveByProductId(productId);
+
+        // 8. Thêm tất cả thông tin vào model
+        model.addAttribute("product", product);
+        model.addAttribute("numberProductDetail", numberProductDetail);
+        model.addAttribute("listProductYouMayLikeResponse", listProductYouMayLikeResponse);
+        model.addAttribute("priceDiscountMax", priceDiscountMax);
+        model.addAttribute("priceDiscountMin", priceDiscountMin);
+        model.addAttribute("priceMax", priceMax);
+        model.addAttribute("priceMin", priceMin);
+        model.addAttribute("listProductSize", listProductSize);
+        model.addAttribute("listProductColor", listProductColor);
+        model.addAttribute("listImage", listImage);
+        model.addAttribute("imageActive", imageActive);
+        model.addAttribute("discount", ProductAndValueDiscountDtoImpl.toResponse(productAndValueDiscountDto));
+
+        return "/admin/cart/product-detail";
+    }
+
+    @GetMapping("/product-detail/quantity-and-price")
+    @ResponseBody
+    public Map<String, Object> getQuantityAndPrice(@RequestParam Integer productId,
+                                                   @RequestParam Integer sizeId,
+                                                   @RequestParam Integer colorId) {
+        ProductDetail productDetail = productDetailService.findBySizeIdAndColorId(productId, sizeId, colorId);
+        Map<String, Object> response = new HashMap<>();
+        if (productDetail != null) {
+            response.put("quantity", productDetail.getQuantity());
+            response.put("price", productDetail.getPriceDiscount());
+        } else {
+            response.put("quantity", 0);
+            response.put("price", 0);
+        }
+        return response;
+    }
+
+    @PostMapping("/themvaohoadon")
+    public String themvaohoadon(@ModelAttribute("thongtinSP") BillDetail detail, RedirectAttributes redirectAttributes) {
+        if (bill == null || bill.getId() == null) {
+            redirectAttributes.addFlashAttribute("error", "Vui lòng tạo hóa đơn trước khi thêm sản phẩm vào giỏ hàng");
+            return "redirect:/tiger/pos";
+        }
+
+        // Tải lại thực thể Bill từ cơ sở dữ liệu
+        Bill managedBill = billService.getOneBill(bill.getId());
+
+        ProductDetail productDetail = productDetailService.findBySizeIdAndColorId(
+                detail.getProductDetail().getProduct().getId(),
+                detail.getProductDetail().getSize().getId(),
+                detail.getProductDetail().getColor().getId()
+        );
+
+        if (productDetail == null || productDetail.getQuantity() < detail.getQuantity()) {
+            redirectAttributes.addFlashAttribute("error", "Sản phẩm không đủ số lượng");
+            return "redirect:/tiger/pos/product-detail/" + detail.getProductDetail().getProduct().getId();
+        }
+
+        List<BillDetail> existingDetails = billService.getLstDetailByBillId(managedBill.getId());
+        for (BillDetail existingDetail : existingDetails) {
+            if (existingDetail.getProductDetail().getId().equals(productDetail.getId()) && existingDetail.getStatus() != 0) {
+                redirectAttributes.addFlashAttribute("error", "Sản phẩm đã có trong giỏ hàng");
+                return "redirect:/tiger/pos/product-detail/" + detail.getProductDetail().getProduct().getId();
+            }
+        }
+
+        detail.setProductDetail(productDetail);
+        detail.setBill(managedBill);
+
+        // Chuyển đổi giá tiền từ chuỗi sang BigDecimal, loại bỏ dấu phân cách hàng nghìn
+        String priceString = detail.getPrice().toString().replace(",", "");
+        try {
+            detail.setPrice(new BigDecimal(priceString));
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("error", "Giá sản phẩm không hợp lệ");
+            return "redirect:/tiger/pos/product-detail/" + detail.getProductDetail().getProduct().getId();
+        }
+
+        billService.addBillDetailPos(detail);
+        productDetail.setQuantity(productDetail.getQuantity() - detail.getQuantity());
+        productDetailService.simplizedUpdate(productDetail.getId(), productDetail);
+
+        tinhTongTien();
+
+        redirectAttributes.addFlashAttribute("message", "Đã thêm sản phẩm vào giỏ hàng");
+        return "redirect:/tiger/pos";
+    }
+
     @RequestMapping("/addHD")
     public String taoHoaDon() {
+        Bill hoadonmoi = new Bill();
+        Integer soluong = billService.getAllBill().size()+1;
+        hoadonmoi.setType(1);
+        hoadonmoi.setCode("MHD" + soluong);
+        hoadonmoi.setOrderDate(ngayhomnay);
+        hoadonmoi.setPrice(BigDecimal.valueOf(0));
+        hoadonmoi.setShippingFee(BigDecimal.valueOf(0));
+        hoadonmoi.setTotalPrice(BigDecimal.valueOf(0));
+        hoadonmoi.setCreateDate(ngayhomnay);
+        hoadonmoi.setStatus(10);
+        hoadonmoi.setVoucher(null);
+        hoadonmoi.setEmployee(currentUser);
+        hoadonmoi.setCustomer(null);
+        billService.addBillPos(hoadonmoi);
 
-            Bill hoadonmoi = new Bill();
-            Integer soluong = billService.getAllBill().size()+1;
-            hoadonmoi.setType(1);
-            hoadonmoi.setCode("MHD" + soluong);
-            hoadonmoi.setOrderDate(ngayhomnay);
-            hoadonmoi.setPrice(BigDecimal.valueOf(0));
-            hoadonmoi.setShippingFee(BigDecimal.valueOf(0));
-            hoadonmoi.setTotalPrice(BigDecimal.valueOf(0));
-            hoadonmoi.setCreateDate(ngayhomnay);
-            hoadonmoi.setStatus(10);
-            hoadonmoi.setVoucher(null);
-            hoadonmoi.setEmployee(currentUser);
-            hoadonmoi.setCustomer(null);
-            billService.addBillPos(hoadonmoi);
-
-            List<Bill> listHD2 = billService.findAllByStatus(10);
-            bill = listHD2.get(listHD2.size() - 1);
+        List<Bill> listHD2 = billService.findAllByStatus(10);
+        currentBill = listHD2.get(listHD2.size() - 1);
         return "redirect:/tiger/pos";
     }
 
@@ -190,12 +336,14 @@ public class OfflineCartController {
         }
         // Check voucher
         var voucher = hoadon.getVoucher();
-        var voucherId = voucher.getId();
-        if(voucherId != null){
-            var check = voucherService.getOne(voucherId);
-            if(check != null && check.getStatus() == 0) {
-                redirectAttributes.addFlashAttribute("StatusVoucher", 0);
-                return "redirect:/tiger/pos";
+        if (voucher != null) {
+            var voucherId = voucher.getId();
+            if (voucherId != null) {
+                var check = voucherService.getOne(voucherId);
+                if (check != null && check.getStatus() == 0) {
+                    redirectAttributes.addFlashAttribute("StatusVoucher", 0);
+                    return "redirect:/tiger/pos";
+                }
             }
         }
         Double tienSauVoucher = Double.parseDouble(String.valueOf(hoadon.getTotalPrice()));
@@ -215,11 +363,11 @@ public class OfflineCartController {
         hoadon.setStatus(1);
         hoadon.setEmployee(currentUser);
         hoadon.setCustomer(bill.getCustomer());
-        if(voucherId != null){
-            hoadon.setVoucher(bill.getVoucher());
-        }else{
-            hoadon.setVoucher(null);
-        }
+//        if(voucherId != null){
+//            hoadon.setVoucher(bill.getVoucher());
+//        }else{
+//            hoadon.setVoucher(null);
+//        }
         hoadon.setType(bill.getType());
 
         billService.addBillPos(hoadon);
@@ -249,7 +397,24 @@ public class OfflineCartController {
         return "/admin/cart/side_form/product_detail_list";
     }
 
-    @RequestMapping("/locSP")
+    @RequestMapping("/products")
+    public String getProducts(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<Product> productPage = productService.getProducts(page);
+
+        // Kiểm tra nếu productPage là null hoặc không có dữ liệu
+        if (productPage == null) {
+            model.addAttribute("errorMessage", "Không có sản phẩm nào được tìm thấy.");
+            return "error"; // Hoặc trả về trang thông báo không có dữ liệu
+        }
+
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("page", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        return "/admin/cart/offline-cart";
+    }
+
+
+    @GetMapping("/locSP")
     public String locSP(
             @RequestParam(defaultValue = "") String tukhoa,
             @RequestParam(defaultValue = "%%") String chatlieu,
@@ -260,7 +425,7 @@ public class OfflineCartController {
         colorCode = mausac;
         matrCode = chatlieu;
         sizeName = kichco;
-        return "redirect:/tiger/pos/litSP";
+        return "redirect:/tiger/pos";
     }
 
     @RequestMapping("/chon_de_them_vao_hd/{id}")

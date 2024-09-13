@@ -3,6 +3,7 @@ package com.sd38.gymtiger.service;
 import com.sd38.gymtiger.dto.admin.ProductDto;
 import com.sd38.gymtiger.model.Product;
 import com.sd38.gymtiger.model.ProductDetail;
+import com.sd38.gymtiger.response.ProductDetailResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,9 +11,14 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
+
     List<Product> getAll();
+
     Page<Product> getAll(Integer page);
+
     Page<ProductDto> getAll(int page);
+
+    Page<Product> getProducts(int page);
 
     Boolean add(String productName, String description, Integer materialId, Integer categoryId, Integer brandId, Integer formId);
 

@@ -1,6 +1,7 @@
 package com.sd38.gymtiger.service.user;
 
 import com.sd38.gymtiger.response.ColorDetailResponse;
+import com.sd38.gymtiger.response.ProductDetailResponse;
 import com.sd38.gymtiger.response.ProductDiscountHomeResponse;
 import com.sd38.gymtiger.response.ProductHomeResponse;
 import com.sd38.gymtiger.response.SizeDetailResponse;
@@ -76,4 +77,5 @@ public interface ProductViewService {
 
     List<Integer> removeNullValueInList(List<Integer> list);
 
+    ProductDetailResponse getProductDetailQuantityAndPrice(Integer productId, Integer sizeId, Integer colorId);
 }

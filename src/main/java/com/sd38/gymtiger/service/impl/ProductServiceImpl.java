@@ -5,6 +5,7 @@ import com.sd38.gymtiger.model.*;
 import com.sd38.gymtiger.repository.ImageRepository;
 import com.sd38.gymtiger.repository.ProductDetailRepository;
 import com.sd38.gymtiger.repository.ProductRepository;
+import com.sd38.gymtiger.response.ProductDetailResponse;
 import com.sd38.gymtiger.service.ImageService;
 import com.sd38.gymtiger.service.ProductDetailService;
 import com.sd38.gymtiger.service.ProductService;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +57,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getAll(Integer page) {
         return null;
+    }
+
+    public Page<Product> getProducts(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return productRepository.findAll(pageable);
     }
 
     @Override
@@ -375,5 +382,4 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
     }
-
 }
