@@ -26,6 +26,7 @@ public interface ProductDetailService {
 
     ProductDetail getOne(Integer id);
 
+    List<ProductDetail> getProductDetailsByProductId(int id);
 
     Page<ProductDetailSearchResponse> getProductByPriceAndSizeIdAndColorId(int page, Integer productId, BigDecimal priceMinDiscount, BigDecimal priceMaxDiscount, Integer sizeId, Integer colorId);
 
@@ -50,4 +51,6 @@ public interface ProductDetailService {
     List<ProductDetail> locSpTaiQuay(String s, String colorCode, String matrCode, String sizeName);
 
     void simplizedUpdate(Integer id, ProductDetail productDetail);
+
+    ProductDetail findBySizeIdAndColorId(int productId, int sizeId, int colorId);
 }

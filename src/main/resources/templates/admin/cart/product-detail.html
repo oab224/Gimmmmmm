@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin-layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết sản phẩm</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container-fluid py-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-5 pb-5">
+                <div class="carousel-inner border">
+                    <div class="carousel-item active" th:if="${imageActive != null}">
+                        <img class="w-100 h-100" style="display: block !important;" th:src="@{'/image/' + ${imageActive.id}}" alt="Image">
+                    </div>
+                    <div th:each="image : ${listImage}" th:if="${image.id != imageActive?.id}" class="carousel-item">
+                        <img class="w-100 h-100" th:src="@{'/image/' + ${image.id}}" th:alt="'Image path: ' + ${image.id}" alt="Image">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 pb-5 form-san-pham">
+                <h3 class="font-weight-semi-bold" th:text="${product.name}"></h3>
+                <div class=" mb-3">
+                    <div class="d-flex" style="margin-bottom: 14px">
+                        <h2 id="productDetail-price" style="color: red">₫0</h2>
+                    </div>
+                </div>
+                <div class="d-flex" style="margin-bottom: 14px">
+                    <p class="text-dark font-weight-medium mb-0 mr-2" >Mã: [(${product.code})]</p>
+                    <p id="product-code"></p>
+                </div>
+                <div class="d-flex" style="margin-bottom: 14px">
+                    <p class="text-dark font-weight-medium mb-0 mr-2">Số lượng: </p>
+                    <p id="productDetail-quantity"> </p>
+                </div>
+                <form th:action="@{/tiger/pos/themvaohoadon}" method="post" id="addToCartForm">
+                    <input type="hidden" th:value="${product.id}" name="productDetail.product.id">
+                    <input type="hidden" id="priceInput" name="price">
+                    <div class="d-flex mb-3">
+                        <p class="text-dark font-weight-medium mb-0 mr-3">Kích cỡ: </p>
+                        <div class="custom-control custom-radio custom-control-inline" th:each="size : ${listProductSize}">
+                            <input type="radio" th:onchange="sizeChange([[${size.id}]])" class="custom-control-input rad-size" th:id="${'size-' + size.id}" th:value="${size.id}" name="productDetail.size.id">
+                            <label class="custom-control-label" th:for="${'size-' + size.id}" th:text="${size.name}"></label>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-4">
+                        <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc: </p>
+                        <div class="custom-control custom-radio custom-control-inline" th:each="color : ${listProductColor}">
+                            <input type="radio" th:onchange="colorChange([[${color.id}]])" class="custom-control-input" th:id="${'color-' + color.id}" th:value="${color.id}" name="productDetail.color.id">
+                            <label class="custom-control-label" th:for="${'color-' + color.id}" th:text="${color.name}"></label>
+                        </div>
+                    </div>
+                    <span id="error-message" style="color: red;"></span>
+                    <input type="hidden" id="priceInput" name="price">
+                    <div class="d-flex align-items-center mb-4 pt-2">
+                        <div class="input-group quantity mr-3" style="width: 130px;">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary btn-minus" type="button">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control bg-secondary text-center" id="quantityBuy" value="1" name="quantity">
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary btn-plus" type="button">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addToCart()" class="btn btn-primary px-3">
+                        <i class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ hàng
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            let quantityInput = $('#quantityBuy');
+            let minValue = 1;
+            let maxValue = /*[[${numberProductDetail}]]*/ 10; // Giá trị mặc định là 10 nếu không có dữ liệu
+
+            $('.btn-plus').click(function() {
+                let currentValue = parseInt(quantityInput.val());
+                if (currentValue < maxValue) {
+                    quantityInput.val(currentValue + 1);
+                }
+            });
+
+            $('.btn-minus').click(function() {
+                let currentValue = parseInt(quantityInput.val());
+                if (currentValue > minValue) {
+                    quantityInput.val(currentValue - 1);
+                }
+            });
+
+            quantityInput.on('input', function() {
+                let currentValue = parseInt($(this).val());
+                if (isNaN(currentValue) || currentValue < minValue) {
+                    $(this).val(minValue);
+                } else if (currentValue > maxValue) {
+                    $(this).val(maxValue);
+                }
+            });
+        });
+
+        // Existing JavaScript code...
+        let productId = /*[[${product.id}]]*/;
+        let selectedSize = null;
+        let selectedColor = null;
+
+        function updateQuantityAndPrice() {
+            if (selectedSize && selectedColor) {
+                fetch(`/tiger/pos/product-detail/quantity-and-price?productId=${productId}&sizeId=${selectedSize}&colorId=${selectedColor}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('productDetail-quantity').textContent = data.quantity;
+                        let quantityInput = document.getElementById('quantityBuy');
+                        quantityInput.max = data.quantity;
+                        if (parseInt(quantityInput.value) > data.quantity) {
+                            quantityInput.value = data.quantity;
+                        }
+                        document.getElementById('productDetail-price').textContent = '₫' + data.price.toLocaleString('vi-VN');
+                    });
+            } else {
+                document.getElementById('productDetail-price').textContent = '₫' + priceMin.toLocaleString('vi-VN') + ' ~ ₫' + priceMax.toLocaleString('vi-VN');
+            }
+        }
+
+        function sizeChange(sizeId) {
+            selectedSize = sizeId;
+            updateQuantityAndPrice();
+        }
+
+        function colorChange(colorId) {
+            selectedColor = colorId;
+            updateQuantityAndPrice();
+        }
+
+        let priceMin = /*[[${priceMin}]]*/;
+        let priceMax = /*[[${priceMax}]]*/;
+        document.getElementById('productDetail-price').textContent = '₫' + priceMin.toLocaleString('vi-VN') + ' ~ ₫' + priceMax.toLocaleString('vi-VN');
+
+        function addToCart() {
+            if (!selectedSize || !selectedColor) {
+                document.getElementById('error-message').textContent = 'Vui lòng chọn kích cỡ và màu sắc';
+                return;
+            }
+
+            let quantity = parseInt(document.getElementById('quantityBuy').value);
+            let maxQuantity = parseInt(document.getElementById('productDetail-quantity').textContent);
+
+            if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
+                document.getElementById('error-message').textContent = 'Số lượng không hợp lệ';
+                return;
+            }
+
+            // Cập nhật giá trước khi submit form
+            document.getElementById('priceInput').value = document.getElementById('productDetail-price').textContent.replace('₫', '').replace(',', '');
+
+            // Submit form
+            document.getElementById('addToCartForm').submit();
+        }
+    </script>
+
+    <!-- Nút thêm vào giỏ hàng -->
+</section>
+</body>
+</html>
+<style>
+    .quantity {
+        display: flex;
+        align-items: center;
+    }
+    .quantity input {
+        width: 50px;
+        text-align: center;
+        border: 1px solid #ced4da;
+        border-radius: 0;
+    }
+    .quantity .btn {
+        padding: 10px 10px;
+        border-radius: 0;
+    }
+</style>

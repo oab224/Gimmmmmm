@@ -16,9 +16,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -31,10 +31,21 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe" />
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
   <component name="ProjectId" id="2kza9B6qhwpQwmhKeaaeeoNFrCh" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -42,6 +53,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -126,7 +138,14 @@
       <workItem from="1725381156476" duration="494000" />
       <workItem from="1725679530081" duration="23401000" />
       <workItem from="1725779712739" duration="2800000" />
-      <workItem from="1725782666785" duration="3006000" />
+      <workItem from="1725782666785" duration="3449000" />
+      <workItem from="1726109043589" duration="13107000" />
+      <workItem from="1726127810011" duration="8176000" />
+      <workItem from="1726153421429" duration="409000" />
+      <workItem from="1726191708134" duration="9486000" />
+      <workItem from="1726203710209" duration="1694000" />
+      <workItem from="1726205547817" duration="8136000" />
+      <workItem from="1726213980020" duration="4404000" />
     </task>
     <servers />
   </component>
@@ -157,16 +176,6 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/user/HomeController.java</url>
-          <line>255</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/user/HomeController.java</url>
-          <line>230</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/CustomerRetailController.java</url>
           <line>20</line>
           <option name="timeStamp" value="48" />
@@ -176,22 +185,12 @@
           <line>26</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>126</line>
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>227</line>
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>136</line>
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.springframework.data.domain.PageImpl" memberName="content" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

@@ -89,60 +89,33 @@
             <!--                Hiển thị giá đã giảm -->
 
             <div class=" mb-3">
-                <div th:if="${priceDiscountMin != priceDiscountMax}">
-                    <div id="price-top" class="d-flex  price-product-detail">
-                        <h3 class="" th:text="'₫' + ${#numbers.formatDecimal(priceDiscountMin, 0, 'COMMA', 0, 'POINT')}"></h3>
-                        <h3 class="ml-1 mr-1 "> ~ </h3>
-                        <h3 class="" th:text="'₫' + ${#numbers.formatDecimal(priceDiscountMax, 0, 'COMMA', 0, 'POINT')}"></h3>
-                    </div>
-                </div>
-                <div  th:if="${priceDiscountMin == priceDiscountMax}">
-                    <div id="price-bottom" class="d-flex  price-product-detail">
-                        <h3 th:text="'₫' + ${#numbers.formatDecimal(priceDiscountMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>
-                    </div>
-
+                <div class="d-flex" style="margin-bottom: 14px">
+                    <h2 id="productDetail-price" style="color: red">₫0</h2>
                 </div>
             </div>
-
-
-            <div th:if="${discount.isDiscount}" class=" mb-3">
-                <div  th:if="${priceMax != priceMin}">
-                    <div id="price-top-discount" class="d-flex  price-product-detail-discount">
-                        <div class="" th:text="'₫' + ${#numbers.formatDecimal(priceMin, 0, 'COMMA', 0, 'POINT')}"></div>
-                        <div class="ml-1 mr-1 "> ~ </div>
-                        <div class="" th:text="'₫' + ${#numbers.formatDecimal(priceMax, 0, 'COMMA', 0, 'POINT')}"></div>
-                    </div>
-                </div>
-                <div  th:if="${priceMax == priceMin}">
-                    <div id="price-bottom-discount" class="d-flex  price-product-detail-discount">
-                        <div th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></div>
-                    </div>
-                </div>
-            </div>
-
             <!--                <div class="font-weight-semi-bold mb-3">-->
             <!--                    <h3 th:id="changePrice" th:text="'₫' + ${#numbers.formatDecimal(priceMin.stripTrailingZeros().toPlainString(), 0, 'COMMA', 0, 'POINT')}"></h3>-->
             <!--                </div>-->
             <div class="d-flex" style="margin-bottom: 14px">
-                <p class="text-dark font-weight-medium mb-0 mr-2" >Mã:</p>
+                <p class="text-dark font-weight-medium mb-0 mr-2" >Mã: [(${product.code})]</p>
                 <p id="product-code"></p>
             </div>
+            <!-- Sửa đổi phần hiển thị số lượng -->
             <div class="d-flex" style="margin-bottom: 14px">
-                <p class="text-dark font-weight-medium mb-0 mr-2" >Số lượng:</p>
-                <p id="productDetail-quantity"></p>
+                <p class="text-dark font-weight-medium mb-0 mr-2">Số lượng: </p>
+                <p id="productDetail-quantity"> </p>
             </div>
-
             <form th:action="@{/add-to-cart}" method="post">
                 <input type="hidden" th:value="${product.id}" name="productId">
                 <div class="d-flex mb-3">
-                    <p class="text-dark font-weight-medium mb-0 mr-3">Kích cỡ:</p>
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Kích cỡ: </p>
                     <div class="custom-control custom-radio custom-control-inline" th:each="size : ${listProductSize}">
                         <input type="radio" th:onchange="sizeChange([[${size.id}]])" class="custom-control-input rad-size" th:id="${'size-' + size.id}" th:value="${size.id}" name="size">
                         <label class="custom-control-label" th:for="${'size-' + size.id}" th:text="${size.name}"></label>
                     </div>
                 </div>
                 <div class="d-flex mb-4">
-                    <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc:</p>
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Màu sắc: </p>
                     <div class="custom-control custom-radio custom-control-inline" th:each="color : ${listProductColor}">
                         <input type="radio" th:onchange="colorChange([[${color.id}]])" class="custom-control-input" th:id="${'color-' + color.id}" th:value="${color.id}" name="color">
                         <label class="custom-control-label" th:for="${'color-' + color.id}" th:text="${color.name}"></label>
@@ -303,3 +276,46 @@
 </body>
 
 </html>
+<script th:inline="javascript">
+    let productId = /*[[${product.id}]]*/;
+    let selectedSize = null;
+    let selectedColor = null;
+
+    function updateQuantityAndPrice() {
+        if (selectedSize && selectedColor) {
+            fetch(`/product-detail/quantity-and-price?productId=${productId}&sizeId=${selectedSize}&colorId=${selectedColor}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('productDetail-quantity').textContent = data.quantity;
+
+                    // Cập nhật giá trị tối đa cho input số lượng
+                    let quantityInput = document.getElementById('quantityBuy');
+                    quantityInput.max = data.quantity;
+                    if (parseInt(quantityInput.value) > data.quantity) {
+                        quantityInput.value = data.quantity;
+                    }
+
+                    // Cập nhật giá tiền
+                    document.getElementById('productDetail-price').textContent = '₫' + data.price.toLocaleString('vi-VN');
+                });
+        } else {
+            // Hiển thị khoảng giá ban đầu nếu chưa chọn đủ màu sắc và kích thước
+            document.getElementById('productDetail-price').textContent = '₫' + priceMin.toLocaleString('vi-VN') + ' ~ ₫' + priceMax.toLocaleString('vi-VN');
+        }
+    }
+
+    function sizeChange(sizeId) {
+        selectedSize = sizeId;
+        updateQuantityAndPrice();
+    }
+
+    function colorChange(colorId) {
+        selectedColor = colorId;
+        updateQuantityAndPrice();
+    }
+
+    // Khởi tạo giá trị ban đầu cho khoảng giá
+    let priceMin = /*[[${priceMin}]]*/;
+    let priceMax = /*[[${priceMax}]]*/;
+    document.getElementById('productDetail-price').textContent = '₫' + priceMin.toLocaleString('vi-VN') + ' ~ ₫' + priceMax.toLocaleString('vi-VN');
+</script>

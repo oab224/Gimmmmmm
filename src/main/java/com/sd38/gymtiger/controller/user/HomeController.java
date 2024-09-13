@@ -3,6 +3,7 @@ package com.sd38.gymtiger.controller.user;
 import com.sd38.gymtiger.dto.common.ProductAndValueDiscountDto;
 import com.sd38.gymtiger.dto.common.impl.ProductAndValueDiscountDtoImpl;
 import com.sd38.gymtiger.model.*;
+import com.sd38.gymtiger.response.ProductDetailResponse;
 import com.sd38.gymtiger.response.ProductDiscountHomeResponse;
 import com.sd38.gymtiger.response.SizeDetailResponse;
 import com.sd38.gymtiger.service.*;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -200,6 +202,12 @@ public class HomeController {
         return "user/shop";
     }
 
+    @GetMapping("/product-detail/quantity-and-price")
+    @ResponseBody
+    public ProductDetailResponse getProductDetailQuantityAndPrice(@RequestParam Integer productId, @RequestParam Integer sizeId, @RequestParam Integer colorId) {
+        return productViewService.getProductDetailQuantityAndPrice(productId, sizeId, colorId);
+    }
+
     @GetMapping("/product-detail/{productId}")
     public String productDetail(@PathVariable Integer productId, Model model) {
 
@@ -266,7 +274,6 @@ public class HomeController {
         // 10. Trả về tên view để hiển thị chi tiết sản phẩm
         return "/user/detail";
     }
-
 
     @GetMapping("/contact")
     public String contact() {

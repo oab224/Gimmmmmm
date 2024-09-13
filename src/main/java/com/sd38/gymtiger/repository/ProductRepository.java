@@ -118,4 +118,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             " AND p.status = 0 ORDER BY p.updateDate DESC")
     Page<ProductDto> searchProductDeleted(Pageable pageable, Integer brandId, Integer categoryId, Integer formId, Integer materialId, String productName);
 
+    Page<Product> findAll(Pageable pageable);
 }

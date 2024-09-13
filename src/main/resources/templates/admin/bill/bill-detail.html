@@ -402,8 +402,9 @@
                                         <th scope="row" colspan="8" class="border-0" style="text-align: right">
                                             Voucher giảm:
                                         </th>
-                                        <td class="border-0" style="text-align: right"
-                                            th:text="'₫' + ${#numbers.formatDecimal(bill.voucher.value, 0, 'POINT', 0, 'COMMA')}">                                            - $25.50
+                                        <td class="border-0" style="text-align: right">
+                                            <span th:if="${bill.voucher != null}" th:text="'₫' + ${#numbers.formatDecimal(bill.voucher.value, 0, 'POINT', 0, 'COMMA')}">- $25.50</span>
+                                            <span th:if="${bill.voucher == null}">Không có</span>
                                         </td>
                                     </tr>
                                     <!-- end tr -->
