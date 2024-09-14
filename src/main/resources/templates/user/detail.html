@@ -103,7 +103,7 @@
             <!-- Sửa đổi phần hiển thị số lượng -->
             <div class="d-flex" style="margin-bottom: 14px">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Số lượng: </p>
-                <p id="productDetail-quantity"> </p>
+                <p id="productDetail-quantity">[(${numberProductDetail})]</p>
             </div>
             <form th:action="@{/add-to-cart}" method="post">
                 <input type="hidden" th:value="${product.id}" name="productId">
@@ -131,14 +131,18 @@
                             </button>
                         </div>
                         <input type="text" class="form-control  text-center" id="quantityBuy"readonly value="1" name="quantity" style="margin-right: 5px; margin-left: 5px">
+
+
                         <script th:inline="javascript">
                             const quantityBuy = document.getElementById('quantityBuy');
-
+                            const numberProduct = document.getElementById("productDetail-quantity").textContent;
                             quantityBuy.addEventListener('input', function(event) {
                                 const inputValue = event.target.value;
                                 event.target.value = inputValue.replace(/\D/g, '');
                                 if (event.target.value.trim() === '') {
                                     event.target.value = '1';
+                                }else if(event.target.value.trim() >= numberProduct.trim()){
+                                    event.target.value = numberProduct.trim();
                                 }
                             });
 
@@ -289,6 +293,7 @@
                     document.getElementById('productDetail-quantity').textContent = data.quantity;
 
                     // Cập nhật giá trị tối đa cho input số lượng
+                    document.getElementById("maxValue").value = data.quantity;
                     let quantityInput = document.getElementById('quantityBuy');
                     quantityInput.max = data.quantity;
                     if (parseInt(quantityInput.value) > data.quantity) {

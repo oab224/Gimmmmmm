@@ -34,7 +34,7 @@
                 </div>
                 <div class="d-flex" style="margin-bottom: 14px">
                     <p class="text-dark font-weight-medium mb-0 mr-2">Số lượng: </p>
-                    <p id="productDetail-quantity"> </p>
+                    <p id="productDetail-quantity">[(${numberProductDetail})]</p>
                 </div>
                 <form th:action="@{/tiger/pos/themvaohoadon}" method="post" id="addToCartForm">
                     <input type="hidden" th:value="${product.id}" name="productDetail.product.id">
@@ -79,31 +79,35 @@
     </div>
 
     <script th:inline="javascript">
-        $(document).ready(function() {
-            let quantityInput = $('#quantityBuy');
+        document.addEventListener('DOMContentLoaded', function() {
+            let quantityInput = document.getElementById('quantityBuy');
             let minValue = 1;
             let maxValue = /*[[${numberProductDetail}]]*/ 10; // Giá trị mặc định là 10 nếu không có dữ liệu
 
-            $('.btn-plus').click(function() {
-                let currentValue = parseInt(quantityInput.val());
+            // Xử lý khi nút tăng số lượng được bấm
+            document.querySelector('.btn-plus').addEventListener('click', function() {
+                console.log("haha");
+                let currentValue = parseInt(quantityInput.value);
                 if (currentValue < maxValue) {
-                    quantityInput.val(currentValue + 1);
+                    quantityInput.value = currentValue + 1;
                 }
             });
 
-            $('.btn-minus').click(function() {
-                let currentValue = parseInt(quantityInput.val());
+            // Xử lý khi nút giảm số lượng được bấm
+            document.querySelector('.btn-minus').addEventListener('click', function() {
+                let currentValue = parseInt(quantityInput.value);
                 if (currentValue > minValue) {
-                    quantityInput.val(currentValue - 1);
+                    quantityInput.value = currentValue - 1;
                 }
             });
 
-            quantityInput.on('input', function() {
-                let currentValue = parseInt($(this).val());
+            // Kiểm tra giá trị số lượng nhập vào
+            quantityInput.addEventListener('input', function() {
+                let currentValue = parseInt(quantityInput.value);
                 if (isNaN(currentValue) || currentValue < minValue) {
-                    $(this).val(minValue);
+                    quantityInput.value = minValue;
                 } else if (currentValue > maxValue) {
-                    $(this).val(maxValue);
+                    quantityInput.value = maxValue;
                 }
             });
         });
