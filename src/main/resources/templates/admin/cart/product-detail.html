@@ -77,101 +77,6 @@
             </div>
         </div>
     </div>
-
-    <script th:inline="javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            let quantityInput = document.getElementById('quantityBuy');
-            let minValue = 1;
-            let maxValue = /*[[${numberProductDetail}]]*/ 10; // Giá trị mặc định là 10 nếu không có dữ liệu
-
-            // Xử lý khi nút tăng số lượng được bấm
-            document.querySelector('.btn-plus').addEventListener('click', function() {
-                console.log("haha");
-                let currentValue = parseInt(quantityInput.value);
-                if (currentValue < maxValue) {
-                    quantityInput.value = currentValue + 1;
-                }
-            });
-
-            // Xử lý khi nút giảm số lượng được bấm
-            document.querySelector('.btn-minus').addEventListener('click', function() {
-                let currentValue = parseInt(quantityInput.value);
-                if (currentValue > minValue) {
-                    quantityInput.value = currentValue - 1;
-                }
-            });
-
-            // Kiểm tra giá trị số lượng nhập vào
-            quantityInput.addEventListener('input', function() {
-                let currentValue = parseInt(quantityInput.value);
-                if (isNaN(currentValue) || currentValue < minValue) {
-                    quantityInput.value = minValue;
-                } else if (currentValue > maxValue) {
-                    quantityInput.value = maxValue;
-                }
-            });
-        });
-
-        // Existing JavaScript code...
-        let productId = /*[[${product.id}]]*/;
-        let selectedSize = null;
-        let selectedColor = null;
-
-        function updateQuantityAndPrice() {
-            if (selectedSize && selectedColor) {
-                fetch(`/tiger/pos/product-detail/quantity-and-price?productId=${productId}&sizeId=${selectedSize}&colorId=${selectedColor}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('productDetail-quantity').textContent = data.quantity;
-                        let quantityInput = document.getElementById('quantityBuy');
-                        quantityInput.max = data.quantity;
-                        if (parseInt(quantityInput.value) > data.quantity) {
-                            quantityInput.value = data.quantity;
-                        }
-                        document.getElementById('productDetail-price').textContent = '₫' + data.price.toLocaleString('vi-VN');
-                    });
-            } else {
-                document.getElementById('productDetail-price').textContent = '₫' + priceMin.toLocaleString('vi-VN') + ' ~ ₫' + priceMax.toLocaleString('vi-VN');
-            }
-        }
-
-        function sizeChange(sizeId) {
-            selectedSize = sizeId;
-            updateQuantityAndPrice();
-        }
-
-        function colorChange(colorId) {
-            selectedColor = colorId;
-            updateQuantityAndPrice();
-        }
-
-        let priceMin = /*[[${priceMin}]]*/;
-        let priceMax = /*[[${priceMax}]]*/;
-        document.getElementById('productDetail-price').textContent = '₫' + priceMin.toLocaleString('vi-VN') + ' ~ ₫' + priceMax.toLocaleString('vi-VN');
-
-        function addToCart() {
-            if (!selectedSize || !selectedColor) {
-                document.getElementById('error-message').textContent = 'Vui lòng chọn kích cỡ và màu sắc';
-                return;
-            }
-
-            let quantity = parseInt(document.getElementById('quantityBuy').value);
-            let maxQuantity = parseInt(document.getElementById('productDetail-quantity').textContent);
-
-            if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
-                document.getElementById('error-message').textContent = 'Số lượng không hợp lệ';
-                return;
-            }
-
-            // Cập nhật giá trước khi submit form
-            document.getElementById('priceInput').value = document.getElementById('productDetail-price').textContent.replace('₫', '').replace(',', '');
-
-            // Submit form
-            document.getElementById('addToCartForm').submit();
-        }
-    </script>
-
-    <!-- Nút thêm vào giỏ hàng -->
 </section>
 </body>
 </html>
@@ -191,3 +96,94 @@
         border-radius: 0;
     }
 </style>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        let quantityInput = document.getElementById('quantityBuy');
+        let minValue = 1;
+        let maxValue = /*[[${numberProductDetail}]]*/ 10; // Giá trị mặc định là 10 nếu không có dữ liệu
+
+        // Xử lý khi nút tăng số lượng được bấm
+        document.querySelector('.btn-plus').addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue < maxValue) {
+                quantityInput.value = currentValue + 1;
+            }
+        });
+
+        // Xử lý khi nút giảm số lượng được bấm
+        document.querySelector('.btn-minus').addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue > minValue) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
+
+        // Kiểm tra giá trị số lượng nhập vào
+        quantityInput.addEventListener('input', function() {
+            let currentValue = parseInt(quantityInput.value);
+            if (isNaN(currentValue) || currentValue < minValue) {
+                quantityInput.value = minValue;
+            } else if (currentValue > maxValue) {
+                quantityInput.value = maxValue;
+            }
+        });
+    });
+
+    let productId = /*[[${product.id}]]*/;
+    let selectedSize = null;
+    let selectedColor = null;
+
+    function updateQuantityAndPrice() {
+        if (selectedSize && selectedColor) {
+            fetch(`/tiger/pos/product-detail/quantity-and-price?productId=${productId}&sizeId=${selectedSize}&colorId=${selectedColor}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('productDetail-quantity').textContent = data.quantity;
+                    let quantityInput = document.getElementById('quantityBuy');
+                    quantityInput.max = data.quantity;
+                    if (parseInt(quantityInput.value) > data.quantity) {
+                        quantityInput.value = data.quantity;
+                    }
+                    document.getElementById('productDetail-price').textContent = '₫' + data.price.toLocaleString('vi-VN');
+                });
+        } else {
+            document.getElementById('productDetail-price').textContent = '₫' + priceMin.toLocaleString('vi-VN') + ' ~ ₫' + priceMax.toLocaleString('vi-VN');
+        }
+    }
+
+    function sizeChange(sizeId) {
+        selectedSize = sizeId;
+        updateQuantityAndPrice();
+    }
+
+    function colorChange(colorId) {
+        selectedColor = colorId;
+        updateQuantityAndPrice();
+    }
+
+    let priceMin = /*[[${priceMin}]]*/;
+    let priceMax = /*[[${priceMax}]]*/;
+    document.getElementById('productDetail-price').textContent = '₫' + priceMin.toLocaleString('vi-VN') + ' ~ ₫' + priceMax.toLocaleString('vi-VN');
+
+    function addToCart() {
+        if (!selectedSize || !selectedColor) {
+            document.getElementById('error-message').textContent = 'Vui lòng chọn kích cỡ và màu sắc';
+            return;
+        }
+
+        let quantity = parseInt(document.getElementById('quantityBuy').value);
+        let maxQuantity = parseInt(document.getElementById('productDetail-quantity').textContent);
+
+        if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
+            document.getElementById('error-message').textContent = 'Số lượng không hợp lệ';
+            return;
+        }
+
+        // Cập nhật giá trước khi submit form
+        let priceText = document.getElementById('productDetail-price').textContent.replace('₫', '').replace(/\./g, '');
+        document.getElementById('priceInput').value = priceText;
+
+        // Submit form
+        document.getElementById('addToCartForm').submit();
+    }
+</script>

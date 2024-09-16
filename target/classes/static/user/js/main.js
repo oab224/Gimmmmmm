@@ -86,7 +86,6 @@
 
     // Product Quantity
     $('.quantity button').on('click', function () {
-        console.log("haha");
         var button = $(this);
         var oldValue = button.parent().parent().find('input').val();
         var maxNumber = $('#maxValue').val();

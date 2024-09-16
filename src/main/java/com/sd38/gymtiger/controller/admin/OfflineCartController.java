@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -283,6 +284,21 @@ public class OfflineCartController {
         return "redirect:/tiger/pos";
     }
 
+    @GetMapping("/get-current-bill")
+    @ResponseBody
+    public Map<String, Object> getCurrentBill() {
+        Map<String, Object> response = new HashMap<>();
+        if (bill != null && bill.getId() != null) {
+            Bill currentBill = billService.getOneBill(bill.getId());
+            response.put("price", currentBill.getPrice());
+            response.put("totalPrice", currentBill.getTotalPrice());
+        } else {
+            response.put("price", 0);
+            response.put("totalPrice", 0);
+        }
+        return response;
+    }
+
     @RequestMapping("/addHD")
     public String taoHoaDon() {
         Bill hoadonmoi = new Bill();
@@ -329,11 +345,12 @@ public class OfflineCartController {
     }
 
     @RequestMapping("/thanhtoan")
-    public String thanhtoan(@ModelAttribute("hoadoncho")Bill hoadon, RedirectAttributes redirectAttributes){
+    public String thanhtoan(@ModelAttribute("hoadoncho")Bill hoadon, RedirectAttributes redirectAttributes) {
         var error = true;
         if (bill.getId()==null){
             return "redirect:/tiger/pos";
         }
+
         // Check voucher
         var voucher = hoadon.getVoucher();
         Integer voucherId = null;
@@ -365,9 +382,11 @@ public class OfflineCartController {
         hoadon.setEmployee(currentUser);
         hoadon.setCustomer(bill.getCustomer());
         hoadon.setCustomerRetail(bill.getCustomerRetail());
-        hoadon.setCustomerName(bill.getCustomerRetail().getName());
-        hoadon.setPhoneNumber(bill.getCustomerRetail().getPhoneNumber());
+        hoadon.setCustomerName(bill.getCustomerRetail() != null ? bill.getCustomerRetail().getName() : "Khách lẻ");
+        hoadon.setPhoneNumber(bill.getCustomerRetail() != null ? bill.getCustomerRetail().getPhoneNumber() : "");
+
         if(voucherId != null){
+
             hoadon.setVoucher(bill.getVoucher());
         }else{
             hoadon.setVoucher(null);
@@ -377,7 +396,17 @@ public class OfflineCartController {
         billService.addBillPos(hoadon);
         bill = new Bill();
         redirectAttributes.addFlashAttribute("StatusVoucher", 1);
-        return "redirect:/tiger/pos";
+
+        // In hóa đơn sau khi thanh toán
+        try {
+            // In hóa đơn
+            inHoaDon(hoadon.getId());
+            // Chuyển hướng về trang POS mà không có thông tin hóa đơn cũ
+            return "redirect:/tiger/pos";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi in hóa đơn: " + e.getMessage());
+            return "redirect:/tiger/pos";
+        }
     }
 
     //chi tiết sản phẩm trong giỏ
@@ -646,7 +675,7 @@ public class OfflineCartController {
         document.add(infoTable);
 
         // Bảng chi tiết sản phẩm
-        PdfPTable table = new PdfPTable(new float[] { 3, 1, 2, 2 });
+        PdfPTable table = new PdfPTable(new float[]{3, 1, 2, 2});
         table.setWidthPercentage(100);
         table.addCell(createCell("Sản phẩm", headerFont, Element.ALIGN_CENTER, true));
         table.addCell(createCell("Số lượng", headerFont, Element.ALIGN_CENTER, true));
@@ -654,13 +683,10 @@ public class OfflineCartController {
         table.addCell(createCell("Thành tiền", headerFont, Element.ALIGN_CENTER, true));
 
         for (BillDetail item : billDetails) {
-            table.addCell(
-                    createCell(item.getProductDetail().getProduct().getName(), normalFont, Element.ALIGN_LEFT, true));
+            table.addCell(createCell(item.getProductDetail().getProduct().getName(), normalFont, Element.ALIGN_LEFT, true));
             table.addCell(createCell(String.valueOf(item.getQuantity()), normalFont, Element.ALIGN_CENTER, true));
             table.addCell(createCell(String.format("%,.0f", item.getPrice()), normalFont, Element.ALIGN_RIGHT, true));
-            table.addCell(
-                    createCell(String.format("%,.0f", item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))),
-                            normalFont, Element.ALIGN_RIGHT, true));
+            table.addCell(createCell(String.format("%,.0f", item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))), normalFont, Element.ALIGN_RIGHT, true));
         }
         table.setSpacingAfter(20);
         document.add(table);
@@ -674,14 +700,11 @@ public class OfflineCartController {
         double totalPayment = bill.getTotalPrice().doubleValue() - voucherValue;
 
         summaryTable.addCell(createCell("Tổng cộng:", headerFont, Element.ALIGN_LEFT, false));
-        summaryTable.addCell(
-                createCell(String.format("%,.0f VNĐ", bill.getTotalPrice()), normalFont, Element.ALIGN_RIGHT, false));
+        summaryTable.addCell(createCell(String.format("%,.0f VNĐ", bill.getTotalPrice()), normalFont, Element.ALIGN_RIGHT, false));
         summaryTable.addCell(createCell("Voucher:", headerFont, Element.ALIGN_LEFT, false));
-        summaryTable
-                .addCell(createCell(String.format("%,.0f VNĐ", voucherValue), normalFont, Element.ALIGN_RIGHT, false));
+        summaryTable.addCell(createCell(String.format("%,.0f VNĐ", voucherValue), normalFont, Element.ALIGN_RIGHT, false));
         summaryTable.addCell(createCell("Tổng thanh toán:", headerFont, Element.ALIGN_LEFT, false));
-        summaryTable
-                .addCell(createCell(String.format("%,.0f VNĐ", totalPayment), normalFont, Element.ALIGN_RIGHT, false));
+        summaryTable.addCell(createCell(String.format("%,.0f VNĐ", totalPayment), normalFont, Element.ALIGN_RIGHT, false));
 
         document.add(summaryTable);
 
