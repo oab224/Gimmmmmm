@@ -20,6 +20,9 @@
         }
     </style>
     <div><h1 align="center">QUẦY HÀNG</h1></div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <p th:text="${error}"></p>
+    </div>
     <aside class="hoadondangthuchien" th:align="center" style="float: right">
         <h3 align="center" class="daude">Thông tin hóa đơn</h3>
 
@@ -218,11 +221,11 @@
                             </div>
                             <div class="mb-3" style="text-align: start;">
                                 <h6  class="form-label">Số điện thoại</h6>
-                                <input type="text" class="form-control" name="phoneNumber" id="formGroupExampleInput2" placeholder="Nhập số điện thoại" required>
+                                <input type="text" class="form-control" name="phoneNumber" id="formGroupExampleInput2" placeholder="Nhập số điện thoại" >
                             </div>
                             <div class="mb-3" style="text-align: start;">
                                 <h6 class="form-label">Email</h6>
-                                <input type="text" class="form-control" name="email" id="formGroupExampleInput3" placeholder="Nhập email" required>
+                                <input type="text" class="form-control" name="email" id="formGroupExampleInput3" placeholder="Nhập email" >
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -293,8 +296,9 @@
             <tr class="gachphai">
                 <th class="gachphai"></th>
                 <th class="gachphai">Tên sản phẩm</th>
-                <th class="gachphai">Giá/sản phẩm</th>
+                <th class="gachphai">Giá bán</th>
                 <th class="gachphai">Số lượng</th>
+                <th class="gachphai">Tổng giá</th>
                 <th><th/>
             </tr>
             <tr class="gachphai" th:each="k: ${giohientai}">
@@ -302,6 +306,7 @@
                 <td class="gachphai">[(${k.productDetail.product.name})]</td>
                 <td class="gachphai">[(${k.price})]</td>
                 <td class="gachphai">[(${k.quantity})]</td>
+                <td class="gachphai">[(${k.price} * ${k.quantity})]</td> <!-- Tổng giá (Giá bán * Số lượng) -->
                 <td>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#exampleModal'+k.id}" style="background-color: dodgerblue; color: white">
                         Chi tiết
@@ -634,6 +639,11 @@
 
     }
 
+    // Gọi hàm tinhTienThua() khi trang được tải lại để cập nhật giá tiền
+    document.addEventListener("DOMContentLoaded", function() {
+        tinhTienThua();
+    });
+
     function demhd(x){
         if (x>=5){
             alert("Số hóa đơn chờ tối đa là 5");
@@ -653,5 +663,20 @@
                 event.preventDefault();
             }
         });
+    });
+
+    function updateTotalPrice() {
+        fetch('/tiger/pos/get-current-bill')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('firstPrice').value = data.price;
+                document.getElementById('giaSale').value = data.totalPrice;
+                tinhTienThua();
+            });
+    }
+
+    // Gọi hàm updateTotalPrice() khi trang được tải lại để cập nhật giá tiền
+    document.addEventListener("DOMContentLoaded", function() {
+        updateTotalPrice();
     });
 </script>

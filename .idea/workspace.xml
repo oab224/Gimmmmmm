@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="26a404a7-46ce-47e3-8dda-c9c95e4f9e2d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/cart/offline-cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/cart/offline-cart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/cart/product-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/cart/product-detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/BillController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/BillController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/OfflineCartController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/OfflineCartController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/PromotionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/PromotionController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/HomeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/UserBillController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/UserBillController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/Bill$BillBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/Bill$BillBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/Bill.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/Bill.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/BillRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/BillRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/ProductDetailRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/ProductDetailRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/ProductRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/ProductRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/PromotionRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/PromotionRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/VoucherRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/VoucherRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/response/ProductDetailResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/response/ProductDetailResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/BillService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/BillService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/ProductDetailService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/ProductDetailService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/ProductService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/ProductService.class" afterDir="false" />
-    </list>
+    <list default="true" id="26a404a7-46ce-47e3-8dda-c9c95e4f9e2d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,17 +52,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "Spring Boot.GymTigerApplication.executor": "Debug",
-    "git-widget-placeholder": "main",
-    "node.js.selected.package.tslint": "(autodetect)"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\DOWLOAD\GymTiger (1)\GymTiger\src\main\resources\templates\employee" />
@@ -157,7 +138,12 @@
       <workItem from="1726191708134" duration="9486000" />
       <workItem from="1726203710209" duration="1694000" />
       <workItem from="1726205547817" duration="8136000" />
-      <workItem from="1726213980020" duration="4404000" />
+      <workItem from="1726213980020" duration="5196000" />
+      <workItem from="1726453710785" duration="3421000" />
+      <workItem from="1726457423265" duration="3553000" />
+      <workItem from="1726467034672" duration="12135000" />
+      <workItem from="1726491574007" duration="4717000" />
+      <workItem from="1726496998191" duration="568000" />
     </task>
     <servers />
   </component>
@@ -196,26 +182,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/CustomerRetailController.java</url>
           <line>26</line>
           <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>337</line>
-          <option name="timeStamp" value="69" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>367</line>
-          <option name="timeStamp" value="71" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>202</line>
-          <option name="timeStamp" value="72" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/admin/OfflineCartController.java</url>
-          <line>165</line>
-          <option name="timeStamp" value="73" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/user/HomeController.java</url>

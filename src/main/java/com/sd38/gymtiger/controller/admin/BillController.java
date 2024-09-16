@@ -377,7 +377,7 @@ private CustomerService customerService;
         List<BillDto> listBill;
 
         if (ngayTaoStart != null) {
-            listBill = billService.searchListBillExcel(null, ngayTaoStart, ngayTaoEnd, null, null, null, null, sort);
+            listBill = billService.searchListBillExcel(null, ngayTaoStart, ngayTaoEnd, 1, null, null, null, sort);
         } else if (ngayTaoEnd != null){
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(ngayTaoEnd);
@@ -386,9 +386,9 @@ private CustomerService customerService;
             calendar.set(Calendar.SECOND, 59);
             calendar.set(Calendar.MILLISECOND, 999);
             Date ngayEnd = calendar.getTime();
-            listBill = billService.searchListBillExcel(null, null, ngayEnd, null, null, null, null, sort);
+            listBill = billService.searchListBillExcel(null, null, ngayEnd, 1, null, null, null, sort);
         } else {
-            listBill = billService.findAllExcel(sort);
+            listBill = billService.searchListBillExcel(null, null, null, 1, null, null, null, sort);
         }
 
         String exportUrl = uriBuilder.path("/export-bill")
