@@ -336,8 +336,9 @@ public class OfflineCartController {
         }
         // Check voucher
         var voucher = hoadon.getVoucher();
+        Integer voucherId = null;
         if (voucher != null) {
-            var voucherId = voucher.getId();
+            voucherId = voucher.getId();
             if (voucherId != null) {
                 var check = voucherService.getOne(voucherId);
                 if (check != null && check.getStatus() == 0) {
@@ -363,11 +364,14 @@ public class OfflineCartController {
         hoadon.setStatus(1);
         hoadon.setEmployee(currentUser);
         hoadon.setCustomer(bill.getCustomer());
-//        if(voucherId != null){
-//            hoadon.setVoucher(bill.getVoucher());
-//        }else{
-//            hoadon.setVoucher(null);
-//        }
+        hoadon.setCustomerRetail(bill.getCustomerRetail());
+        hoadon.setCustomerName(bill.getCustomerRetail().getName());
+        hoadon.setPhoneNumber(bill.getCustomerRetail().getPhoneNumber());
+        if(voucherId != null){
+            hoadon.setVoucher(bill.getVoucher());
+        }else{
+            hoadon.setVoucher(null);
+        }
         hoadon.setType(bill.getType());
 
         billService.addBillPos(hoadon);
