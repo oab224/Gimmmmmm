@@ -304,9 +304,9 @@
             <tr class="gachphai" th:each="k: ${giohientai}">
                 <td class="gachphai"><img th:src="@{${'/assets/product/'+k.productDetail.product.listImage.get(0).name}}" alt="" srcset="" style="width: 30px"/></td>
                 <td class="gachphai">[(${k.productDetail.product.name})]</td>
-                <td class="gachphai">[(${k.price})]</td>
+                <td class="gachphai">[(${#numbers.formatDecimal(k.price, 0, 'COMMA', 0, 'POINT')})] </td>
                 <td class="gachphai">[(${k.quantity})]</td>
-                <td class="gachphai">[(${k.price} * ${k.quantity})]</td> <!-- Tổng giá (Giá bán * Số lượng) -->
+                <td class="gachphai">[(${#numbers.formatDecimal(k.price * k.quantity, 0, 'COMMA', 0, 'POINT')})] </td> <!-- Tổng giá (Giá bán * Số lượng) -->
                 <td>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="${'#exampleModal'+k.id}" style="background-color: dodgerblue; color: white">
                         Chi tiết
@@ -331,7 +331,7 @@
                                             <td><h4>[(${k.productDetail.product.name})]</h4></td>
                                         </tr>
                                         <tr class="cochuTTSP">
-                                            <td class="cochuTTSP">Giá bán: [(${k.productDetail.price})]</td>
+                                            <td class="cochuTTSP">Giá bán: [(${#numbers.formatDecimal(k.productDetail.price, 0, 'COMMA', 0, 'POINT')})] VND</td>
                                         </tr>
                                         <tr class="cochuTTSP">
                                             <td>Chất liệu: [(${k.productDetail.product.material.name})]</td>
@@ -379,7 +379,7 @@
                 <tr class="gachphai" th:each="product : ${productPage.content}">
                     <td class="gachphai" th:text="${product.code}"></td>
                     <td class="gachphai" th:text="${product.name}"></td>
-                    <td class="gachphai" th:text="${#numbers.formatDecimal(#aggregates.avg(product.listProductDetail.![price]), 0, 'COMMA', 0, 'POINT')}"></td>
+                    <td class="gachphai" th:text="${#numbers.formatDecimal(#aggregates.avg(product.listProductDetail.![price]), 0, 'COMMA', 0, 'POINT')}" > </td>
                     <td class="gachphai" th:text="${#aggregates.sum(product.listProductDetail.![quantity])}"></td>
                     <td>
                     <td>
@@ -432,6 +432,79 @@
         const img = document.getElementById("img_qr_main");
         let urlQr = `https://img.vietqr.io/image/${MY_BANK.BANK_ID}-${MY_BANK.ACCOUNT_NO}-compact2.png?amount=${totalMoney}&addInfo=${content}`;
         img.src = urlQr;
+    }
+
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
+    function updateTotalPrice() {
+        fetch('/tiger/pos/get-current-bill')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('firstPrice').value = data.price;
+                document.getElementById('giaSale').value = data.totalPrice;
+                document.getElementById('firstPriceDisplay').innerText = formatCurrency(data.price);
+                document.getElementById('giaSaleDisplay').innerText = formatCurrency(data.totalPrice);
+                tinhTienThua();
+            });
+    }
+
+    function tinhTienThua() {
+        const tongTien = parseFloat(document.getElementById("giaSale").value);
+        const tienKhachDua = parseFloat(document.getElementById("tienKhachDua").value);
+        const tienThua = tienKhachDua - tongTien;
+
+        const tienThuaInput = document.getElementById("tienThua");
+        if (tienThua >= 0) {
+            tienThuaInput.value = tienThua.toFixed(2);
+            document.getElementById('tienThuaDisplay').innerText = formatCurrency(tienThua);
+            thieutienko = false;
+        } else {
+            tienThuaInput.value = tienThua.toFixed(2);
+            document.getElementById('tienThuaDisplay').innerText = formatCurrency(tienThua);
+            thieutienko = true;
+        }
+    }
+
+    // Gọi hàm updateTotalPrice() khi trang được tải lại để cập nhật giá tiền
+    document.addEventListener("DOMContentLoaded", function() {
+        updateTotalPrice();
+    });
+
+    function openInvoiceWindow(invoiceId) {
+        const url = `/tiger/pos/print-pdf/${invoiceId}`;
+        window.open(url, '_blank');
+    }
+
+    function myFunction1(code) {
+        let kiemtrahoadon = dachonHD();
+
+        if (kiemtrahoadon == false) {
+            return kiemtrahoadon;
+        }
+        let text = "Bạn chắc chắn muốn thanh toán không";
+        let kt = confirm(text);
+        if (kt == true) {
+            if (thieutienko == false) {
+                // confirm("Thanh toán thành công");
+                var totalMoney = document.querySelector(".total_money").value;
+                document.getElementById("tienKhachDua").value = totalMoney;
+
+                // Lấy ID hóa đơn hiện tại
+                const invoiceId = document.getElementById('idHdDuocChon').value;
+
+                // Mở cửa sổ mới để in hóa đơn
+                openInvoiceWindow(invoiceId);
+
+                return true;
+            } else {
+                alert("Khách đưa không đủ tiền");
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
 </script>
@@ -665,12 +738,18 @@
         });
     });
 
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
     function updateTotalPrice() {
         fetch('/tiger/pos/get-current-bill')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('firstPrice').value = data.price;
                 document.getElementById('giaSale').value = data.totalPrice;
+                document.getElementById('firstPriceDisplay').innerText = formatCurrency(data.price);
+                document.getElementById('giaSaleDisplay').innerText = formatCurrency(data.totalPrice);
                 tinhTienThua();
             });
     }
@@ -679,4 +758,39 @@
     document.addEventListener("DOMContentLoaded", function() {
         updateTotalPrice();
     });
+
+    function openInvoiceWindow(invoiceId) {
+        const url = `/tiger/pos/print-pdf/${invoiceId}`;
+        window.open(url, '_blank');
+    }
+
+    function myFunction1(code) {
+        let kiemtrahoadon = dachonHD();
+
+        if (kiemtrahoadon == false) {
+            return kiemtrahoadon;
+        }
+        let text = "Bạn chắc chắn muốn thanh toán không";
+        let kt = confirm(text);
+        if (kt == true) {
+            if (thieutienko == false) {
+                // confirm("Thanh toán thành công");
+                var totalMoney = document.querySelector(".total_money").value;
+                document.getElementById("tienKhachDua").value = totalMoney;
+
+                // Lấy ID hóa đơn hiện tại
+                const invoiceId = document.getElementById('idHdDuocChon').value;
+
+                // Mở cửa sổ mới để in hóa đơn
+                openInvoiceWindow(invoiceId);
+
+                return true;
+            } else {
+                alert("Khách đưa không đủ tiền");
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 </script>
