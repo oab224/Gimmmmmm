@@ -345,13 +345,15 @@ public class OfflineCartController {
     }
 
     @RequestMapping("/thanhtoan")
-    public String thanhtoan(@ModelAttribute("hoadoncho")Bill hoadon, RedirectAttributes redirectAttributes) {
+    public String thanhtoan(@ModelAttribute("hoadoncho") Bill hoadon, RedirectAttributes redirectAttributes) {
         var error = true;
-        if (bill.getId()==null){
+
+        // Kiểm tra id hóa đơn
+        if (bill.getId() == null) {
             return "redirect:/tiger/pos";
         }
 
-        // Check voucher
+        // Kiểm tra voucher
         var voucher = hoadon.getVoucher();
         Integer voucherId = null;
         if (voucher != null) {
@@ -364,20 +366,22 @@ public class OfflineCartController {
                 }
             }
         }
+
+        // Xử lý thanh toán
         Double tienSauVoucher = Double.parseDouble(String.valueOf(hoadon.getTotalPrice()));
         Double tienKhachDua = Double.parseDouble(String.valueOf(hoadon.getDiscountAmount()));
         Timestamp orderDate = new Timestamp(System.currentTimeMillis());
 
         Double tinhtien = tienKhachDua - tienSauVoucher;
-        String chuThich = "Tiền thừa của khách là: "+ tinhtien;
+        String chuThich = "Tiền thừa của khách là: " + tinhtien;
         hoadon.setNote(chuThich);
-        hoadon.setPaymentDate(ngayhomnay);
-        hoadon.setConfirmationDate(ngayhomnay);
-        hoadon.setCompletionDate(ngayhomnay);
+        hoadon.setPaymentDate(orderDate);
+        hoadon.setConfirmationDate(orderDate);
+        hoadon.setCompletionDate(orderDate);
         hoadon.setOrderDate(orderDate);
         hoadon.setShippingFee(BigDecimal.valueOf(0.0));
         hoadon.setCreateDate(bill.getCreateDate());
-        hoadon.setUpdateDate(ngayhomnay);
+        hoadon.setUpdateDate(orderDate);
         hoadon.setStatus(1);
         hoadon.setEmployee(currentUser);
         hoadon.setCustomer(bill.getCustomer());
@@ -385,21 +389,21 @@ public class OfflineCartController {
         hoadon.setCustomerName(bill.getCustomerRetail() != null ? bill.getCustomerRetail().getName() : "Khách lẻ");
         hoadon.setPhoneNumber(bill.getCustomerRetail() != null ? bill.getCustomerRetail().getPhoneNumber() : "");
 
-        if(voucherId != null){
-
+        // Gán voucher nếu có
+        if (voucherId != null) {
             hoadon.setVoucher(bill.getVoucher());
-        }else{
+        } else {
             hoadon.setVoucher(null);
         }
         hoadon.setType(bill.getType());
 
+        // Thêm hóa đơn vào cơ sở dữ liệu
         billService.addBillPos(hoadon);
         bill = new Bill();
         redirectAttributes.addFlashAttribute("StatusVoucher", 1);
 
         // In hóa đơn sau khi thanh toán
         try {
-            // In hóa đơn
             inHoaDon(hoadon.getId());
             // Chuyển hướng về trang POS mà không có thông tin hóa đơn cũ
             return "redirect:/tiger/pos";
