@@ -209,7 +209,9 @@
                                                     <div class="media-body  my-auto">
                                                         <div class="row ">
                                                             <div class="col-auto">
-                                                                <p class="mb-0"><b th:text="${item.productDetail.product.name}"></b></p>
+                                                                <p class="mb-0"><b
+                                                                        th:text="${item.productDetail.product.name}"></b>
+                                                                </p>
                                                                 <small class="" th:text="'Màu: ' + ${item.productDetail.color.name}
                                 + ', ' + 'Kích cỡ: ' + ${item.productDetail.size.name}"></small>
                                                             </div>
@@ -218,11 +220,17 @@
                                                 </div>
                                             </div>
                                             <div class=" pl-0 flex-sm-col col-auto  my-auto ">
-                                                <p><b th:text="'₫' + ${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></b></p>
+                                                <p>
+                                                    <b th:text="'₫' + ${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></b>
+                                                </p>
                                             </div>
-                                            <div class=" pl-0 flex-sm-col col-auto  my-auto"><p class="boxed-1" th:text="'SL: ' + ${item.quantity}"></p></div>
+                                            <div class=" pl-0 flex-sm-col col-auto  my-auto"><p class="boxed-1"
+                                                                                                th:text="'SL: ' + ${item.quantity}"></p>
+                                            </div>
                                             <div class=" pl-0 flex-sm-col col-auto  my-auto ">
-                                                <p><b th:text="'₫' + ${#numbers.formatDecimal(item.price*item.quantity, 0, 'COMMA', 0, 'POINT')}"></b></p>
+                                                <p>
+                                                    <b th:text="'₫' + ${#numbers.formatDecimal(item.price*item.quantity, 0, 'COMMA', 0, 'POINT')}"></b>
+                                                </p>
                                             </div>
                                         </div>
                                         <hr class="my-2">

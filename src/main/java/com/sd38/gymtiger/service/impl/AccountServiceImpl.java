@@ -46,6 +46,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public String updateImg(Long accountId, String imageUrl) {
+        accountRepository.updateAvatar(imageUrl, accountId);
+        return  imageUrl;
+
+    }
+
+    @Override
     public Page<Account> getPage(Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
         return accountRepository.findAllByAndStatusOrderByUpdateDateDesc(pageable, 1);

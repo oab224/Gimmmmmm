@@ -4,8 +4,11 @@ import com.sd38.gymtiger.model.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +18,11 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("SELECT c FROM Account c WHERE c.email LIKE %:keyword% OR c.name LIKE %:keyword% OR c.phoneNumber LIKE %:keyword%")
     Page<Account> searchAccountKeyword(String keyword, Pageable pageable);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Account a SET a.avatar = :avatar WHERE a.id = :id")
+    void updateAvatar(@Param("avatar") String avatar, @Param("id") Long id);
 
     Account findFirstByEmail(String email);
 

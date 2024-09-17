@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface AccountService {
     List<Account> getAll();
-
+    String updateImg(Long accountId, String imageUr);
     Page<Account> getPage(Integer page);
 
     String add(Account account, MultipartFile avt, Integer roleId);

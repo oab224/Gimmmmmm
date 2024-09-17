@@ -164,6 +164,7 @@ public class VoucherServiceImpl implements VoucherService {
         if (optional.isPresent()) {
             Voucher voucher = optional.get();
             voucher.setStatus(0);
+
             return voucherRepository.save(voucher);
         } else {
             return null;

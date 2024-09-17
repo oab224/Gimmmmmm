@@ -109,7 +109,15 @@ public class OfflineCartController {
                        @RequestParam(defaultValue = "0") int page) {
         String currentUserName = principal.getName();
         currentUser = accountService.findFirstByEmail(currentUserName);
+        var voucher = bill.getVoucher();
+        if(voucher != null) {
+            var isVoucher = billService.getOneBill(bill.getId()).getVoucher().getStatus();
+            if(isVoucher == 0){
+                bill.setVoucher(null);
+                huyVcr();
+            }
 
+        }
         List<Bill> listHdCho = new ArrayList<>();
         for (Bill k: billService.findAllByStatus(10)){
             if (k.getType()==1){
