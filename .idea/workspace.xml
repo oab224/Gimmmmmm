@@ -5,26 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26a404a7-46ce-47e3-8dda-c9c95e4f9e2d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/user/UserCartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/controller/user/UserCartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/repository/CartDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/repository/CartDetailRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/repository/CartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/repository/CartRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/repository/user/UserProductDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/repository/user/UserProductDetailRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/CartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/impl/CartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/impl/CartServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/impl/user/UserProductDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/impl/user/UserProductDetailServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/user/UserProductDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sd38/gymtiger/service/user/UserProductDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/cart/product-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/cart/product-detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/cart.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/UserCartController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/UserCartController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/CartDetailRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/CartDetailRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/user/UserProductDetailRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/user/UserProductDetailRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/CartService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/CartService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/CartServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/CartServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/user/UserProductDetailServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/user/UserProductDetailServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/user/UserProductDetailService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/user/UserProductDetailService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/AuthController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/BillController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/CustomerRetailController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/OfflineCartController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/admin/PromotionController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/HomeController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/UserBillController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/controller/user/UserCartController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/dto/admin/BillDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/Bill$BillBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/Bill.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/CartDetail.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/CartDetail.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/CustomerRetail$CustomerRetailBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/CustomerRetail.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/SessionCartItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/model/SessionCartItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/AccountRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/BillRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/CartDetailRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/CartRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/CustomerRetailRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/ProductDetailRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/ProductRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/PromotionRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/VoucherRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/repository/user/UserProductDetailRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/response/ProductDetailResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/AccountService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/BillService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/CartService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/CustomerRetailService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/ProductDetailService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/ProductService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/AccountServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/BillServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/CartServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/CustomerRetailServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/ProductDetailServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/ProductServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/VoucherServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/user/ProductViewServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/impl/user/UserProductDetailServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/user/ProductViewService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sd38/gymtiger/service/user/UserProductDetailService.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +71,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="17898806c17b5a0d8e4ae944ab34dac8594bdbf2" />
+        <entry key="$PROJECT_DIR$" value="Thang" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
