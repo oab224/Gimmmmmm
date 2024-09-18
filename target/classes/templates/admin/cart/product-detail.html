@@ -173,7 +173,8 @@
 
         let quantity = parseInt(document.getElementById('quantityBuy').value);
         let maxQuantity = parseInt(document.getElementById('productDetail-quantity').textContent);
-
+        console.log(quantity);
+        return;
         if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
             document.getElementById('error-message').textContent = 'Số lượng không hợp lệ';
             return;

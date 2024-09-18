@@ -18,6 +18,11 @@ public class UserProductDetailServiceImpl implements UserProductDetailService {
     }
 
     @Override
+    public void updateProductDetail(int id, int numberProduct) {
+        userProductDetailRepository.updateNumberProduct(numberProduct, id);
+    }
+
+    @Override
     public Integer getProductDetailId(Integer productId, Integer sizeId, Integer colorId) {
         return userProductDetailRepository.getProductDetailId(productId, sizeId, colorId);
     }

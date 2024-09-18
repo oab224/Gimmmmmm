@@ -26,4 +26,6 @@ public interface CartService {
     Cart getCart(String email);
 
     void deleteCartById(Integer id);
+
+    int getNumberOfCarts(Integer id, Integer idProductDetail);
 }

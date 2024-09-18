@@ -89,18 +89,21 @@ public class UserCartController {
             }
         } else {
             String email = principal.getName();
+            // Cập nhật số lượng tồn trong giỏ hàng
+            var numberProductNew = productDetail.getQuantity() - quantity;
+            userProductDetailService.updateProductDetail(productDetail.getId(), numberProductNew);
             boolean check = cartService.addToCart(productDetail, quantity, email);
             if (check){
                 Cart cart = cartService.getCart(email);
-//                List<CartDetail> cartdetail = new ArrayList<>();
-//                for (CartDetail detail : cartdetail ){
-//                    if (detail.getProductDetail().getId().equals(productId)) {
-//                        item.setQuantity(item.getQuantity() + 1);
-//                        return "redirect:/cart";
-//                    }
-//                }
-                session.setAttribute("totalItems", cart.getTotalItems());
-                redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
+////                List<CartDetail> cartdetail = new ArrayList<>();
+////                for (CartDetail detail : cartdetail ){
+////                    if (detail.getProductDetail().getId().equals(productId)) {
+////                        item.setQuantity(item.getQuantity() + 1);
+////                        return "redirect:/cart";
+////                    }
+////                }
+                    session.setAttribute("totalItems", cart.getTotalItems());
+                    redirectAttributes.addFlashAttribute("mess", "Thêm giỏ hàng thành công!");
             } else {
                 redirectAttributes.addFlashAttribute("error", "Không thể thêm vì sẽ vượt quá giới hạn số lượng của sản phẩm này trong giỏ hàng!");
             }
@@ -108,6 +111,17 @@ public class UserCartController {
         return "redirect:/product-detail/" + productId;
     }
 
+    @PostMapping("/add-to-cart-custom")
+    public void addToCartCustom(@RequestParam("color") Integer colorId,
+                                @RequestParam("size") Integer sizeId,
+                                @RequestParam("quantity") Integer quantity,
+                                @RequestParam("productId") Integer productId,
+                                Principal principal,
+                                RedirectAttributes redirectAttributes,
+                                HttpSession session){
+        ProductDetail productDetail = userProductDetailService.getProductDetail(productId, sizeId, colorId);
+
+    }
     @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=update")
     public String updateCart(@RequestParam("id") Integer id,
                              @RequestParam("quantity") Integer quantity,
@@ -128,10 +142,14 @@ public class UserCartController {
             }
         } else {
             String email = principal.getName();
+            // Check số lượng trong giỏ hàng ban đầu trước khi update
+            Cart cart = cartService.getCart(email);
+            var oldNumberOfCart = cartService.getNumberOfCarts(cart.getId(), productDetail.getId());
+            var numberProductNew = productDetail.getQuantity() - (quantity - oldNumberOfCart);
+            userProductDetailService.updateProductDetail(productDetail.getId(), numberProductNew);
             boolean check = cartService.updateCart(productDetail, quantity, email);
             if (check){
                 redirectAttributes.addFlashAttribute("mess","Đã update số lượng sản phẩm");
-                Cart cart = cartService.getCart(email);
                 session.setAttribute("totalItems", cart.getTotalItems());
             } else {
                 redirectAttributes.addFlashAttribute("error","Số lượng phải nhỏ hơn hoặc bằng số lượng tồn");

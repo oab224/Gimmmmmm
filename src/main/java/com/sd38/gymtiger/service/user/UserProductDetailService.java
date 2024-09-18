@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserProductDetailService {
     List<ProductDetail> getAllProductDetail(Integer id);
-
+    void updateProductDetail(int id, int numberProduct);
     Integer getProductDetailId(Integer productId, Integer sizeId, Integer colorId);
 
     ProductDetail getProductDetailById(Integer id);

@@ -35,6 +35,9 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductDetailRepository productDetailRepository;
 
+    @Autowired
+    private CartDetailRepository cartDetailRepository;
+
     @Override // Ghi đè phương thức từ interface hoặc lớp cha
     @Transactional // Đảm bảo các thao tác trên database được thực hiện trong một transaction
     public boolean addToCart(ProductDetail productDetail, Integer quantity, String email) {
@@ -328,6 +331,12 @@ public class CartServiceImpl implements CartService {
         cart.setTotalPrice(BigDecimal.ZERO);
         cart.setTotalItems(0);
         cartRepository.save(cart);
+    }
+
+    @Override
+    public int getNumberOfCarts(Integer id, Integer idProductDetail) {
+        var cartDetail = cartDetailRepository.getNumberOfCart(id,idProductDetail);
+        return cartDetail.getQuantity();
     }
 
     private CartDetail find(Set<CartDetail> cartItems, Integer productDetailId) {
